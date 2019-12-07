@@ -78,7 +78,9 @@
     * el-upload中的:data="{  }" 是上传附带的参数
     *
     * */
-  export default {
+  import request from "../../util/utils";
+
+    export default {
     name: "userDetail",
     data() {
      return {
@@ -87,7 +89,7 @@
          name: '',
          idCode: ''
        },
-       action: 'https://jsonplaceholder.typicode.com/posts/',
+       action: "http://localhost:8080/resource",
        uploadData: { // 上传附带参数
 
        }

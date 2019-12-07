@@ -76,6 +76,8 @@
 </template>
 
 <script>
+  import request from "../../util/utils";
+
   const resetPassword = {
     data() {
       return {
@@ -248,9 +250,13 @@
           }
         });
         if (!Object.values(this.formKey).includes(false)) {
-          // 提交表单
+            var url = 'register'
+            if (signIn) {
+                url = 'login';
+            }
+            request.get(url, signUpFormData);
         }
-        this.$router.push({path: '/loan'})
+        this.$router.push({path: '/'})
       },
 
       handleShowPassword() {

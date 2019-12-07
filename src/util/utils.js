@@ -62,9 +62,9 @@ export const global = {
   }
 };
 
-export const location = 'http://localhost:8082/sc-MDC/' // 服务器地址
+export const location = 'http://localhost:8080/' // 服务器地址
 const requestUrl = {
-  externalSysController: {
+  userController: {
     login: 'fUserLogin',
   }
 }
@@ -74,7 +74,7 @@ const getRequestUrl = (url) => {
     const second = requestUrl[i]
     for (let n in second) {
       if (url === n) {
-         return location + controller + '.do?' + second[n]
+         return location + controller + '/' + second[n]
       }
     }
   }
