@@ -253,8 +253,12 @@
             var url = 'register'
             if (signIn) {
                 url = 'login';
+                request.get(url, signUpFormData);
+            } else {
+                url = "registry";
+                request.post(url, signUpFormData);
             }
-            request.get(url, signUpFormData);
+            //TODO save user info
         }
         this.$router.push({path: '/'})
       },

@@ -64,8 +64,11 @@ export const global = {
 
 export const location = 'http://localhost:8080/' // 服务器地址
 const requestUrl = {
-  userController: {
-    login: 'fUserLogin',
+  user: {
+    login: '',
+    register: '',
+    getIdCard: 'idCard',
+    updateIdCard: 'idCard',
   }
 }
 const getRequestUrl = (url) => {

@@ -14,7 +14,7 @@
                     <el-row>
                         <el-col :span="10">身份证号</el-col>
                         <el-col :span="14">
-                            <input type="text" v-model="formData.idCode">
+                            <input type="text" v-model="formData.idCard">
                         </el-col>
                     </el-row>
                 </div>
@@ -28,10 +28,10 @@
                                 class="avatar-uploader"
                                 :action="action"
                                 :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :data="{  }"
+                                :on-success="handleAvatarSuccessFron"
+                                :data="{name: '身份证正面'}"
                                 :before-upload="beforeAvatarUpload">
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                            <img v-if="formData.frontImageUrl" :src="formData.frontImageUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             <div class="el-upload__text">扫描身份证正面上传</div>
                         </el-upload>
@@ -42,10 +42,10 @@
                                 class="avatar-uploader"
                                 :action="action"
                                 :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :data="{  }"
+                                :on-success="handleAvatarSuccessOppo"
+                                :data="{name: '身份证反面'}"
                                 :before-upload="beforeAvatarUpload">
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                            <img v-if="formData.oppositeImageUrl" :src="formData.oppositeImageUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             <div class="el-upload__text">扫描身份证反面上传</div>
                         </el-upload>
@@ -56,10 +56,10 @@
                                 class="avatar-uploader"
                                 :action="action"
                                 :show-file-list="false"
-                                :on-success="handleAvatarSuccess"
-                                :data="{  }"
+                                :on-success="handleAvatarSuccessFron"
+                                :data="{name: '手持身份证'}"
                                 :before-upload="beforeAvatarUpload">
-                            <img v-if="imageUrl" :src="imageUrl" class="avatar">
+                            <img v-if="formData.holdCardImageUrl" :src="formData.holdCardImageUrl" class="avatar">
                             <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                             <div class="el-upload__text">手持身份证照扫描上传</div>
                         </el-upload>
@@ -84,10 +84,15 @@
     name: "userDetail",
     data() {
      return {
-       imageUrl: '',
        formData: {
-         name: '',
-         idCode: ''
+           name: '',
+           idCard: '',
+           frontImageId: '',
+           oppositeImageId: '',
+           holdCardImageId: '',
+           frontImageUrl: '',
+           oppositeImageUrl: '',
+           holdCardImageUrl: '',
        },
        action: "http://localhost:8080/resource",
        uploadData: { // 上传附带参数
@@ -97,9 +102,12 @@
     },
     created() {
       const { id } = this.$store.userInfo;
+      var _this = this;
       // 获取用户信息，赋值给formData
-      this.$request.get('', { id }).then(data=> {
-
+      this.$request.get('idCard', { id }).then(resp=> {
+          if (resp.code == 0) {
+            _this.formData = resp.data;
+          }
       });
     },
     methods: {
