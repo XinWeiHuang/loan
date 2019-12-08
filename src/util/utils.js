@@ -65,13 +65,17 @@ export const global = {
 export const location = 'http://192.168.1.106:8082/' // 服务器地址
 const requestUrl = {
   user: {
-    login: '',
-    register: '',
+    getLogin: '',
+    postRegister: '',
     getIdCard: 'idCard',
+<<<<<<< HEAD
     updateIdCard: 'idCard',
   },
   resource: {
     verification: 'verification'
+=======
+    postIdCard: 'idCard',
+>>>>>>> 2dc9945de0019c23e7555e3f6db462cd48817135
   }
 }
 const getRequestUrl = (url) => {
