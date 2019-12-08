@@ -65,10 +65,10 @@ export const global = {
 export const location = 'http://localhost:8080/' // 服务器地址
 const requestUrl = {
   user: {
-    login: '',
-    register: '',
+    getLogin: '',
+    postRegister: '',
     getIdCard: 'idCard',
-    updateIdCard: 'idCard',
+    postIdCard: 'idCard',
   }
 }
 const getRequestUrl = (url) => {
