@@ -56,7 +56,7 @@
                                 class="avatar-uploader"
                                 :action="action"
                                 :show-file-list="false"
-                                :on-success="handleAvatarSuccessFron"
+                                :on-success="handleAvatarSuccessHold"
                                 :data="{name: '手持身份证'}"
                                 :before-upload="beforeAvatarUpload">
                             <img v-if="formData.holdCardImageUrl" :src="formData.holdCardImageUrl" class="avatar">
@@ -74,49 +74,62 @@
 </template>
 
 <script>
-    /*
-    * el-upload中的:data="{  }" 是上传附带的参数
-    *
-    * */
+  /*
+  * el-upload中的:data="{  }" 是上传附带的参数
+  *
+  * */
   import request from "../../util/utils";
+  import {location} from "../../util/utils";
 
-    export default {
+  export default {
     name: "userDetail",
     data() {
-     return {
-       formData: {
-           name: '',
-           idCard: '',
-           frontImageId: '',
-           oppositeImageId: '',
-           holdCardImageId: '',
-           frontImageUrl: '',
-           oppositeImageUrl: '',
-           holdCardImageUrl: '',
-       },
-       action: "http://localhost:8080/resource",
-       uploadData: { // 上传附带参数
+      return {
+        formData: {
+          name: '',
+          idCard: '',
+          frontImageId: '',
+          oppositeImageId: '',
+          holdCardImageId: '',
+          frontImageUrl: '',
+          oppositeImageUrl: '',
+          holdCardImageUrl: '',
+        },
+        action: location + "resource",
+        uploadData: { // 上传附带参数
 
-       }
-     }
+        }
+      }
     },
     created() {
-      const { id } = this.$store.userInfo;
+      const {id} = this.$store.state.userInfo;
       var _this = this;
       // 获取用户信息，赋值给formData
-      this.$request.get('idCard', { id }).then(resp=> {
-          if (resp.code == 0) {
-            _this.formData = resp.data;
-          }
+      this.$request.get('getIdCard').then(resp => {
+        if (resp.code == 0) {
+          _this.formData = resp.data;
+        }
       });
     },
     methods: {
-      handleAvatarSuccess(response, file, fileList) {
-        //
+      handleAvatarSuccessFron(response, file, fileList) {
+        const { data } = response;
+        this.formData['frontImageUrl'] = data.fullPath;
+        this.formData['frontImageId'] = data.id;
       },
-      beforeAvatarUpload (file) {
+      handleAvatarSuccessOppo(response, file, fileList) {
+        const { data } = response;
+        this.formData['oppositeImageUrl'] = data.fullPath;
+        this.formData['oppositeImageId'] = data.id;
+      },
+      handleAvatarSuccessHold(response, file, fileList) {
+        const { data } = response;
+        this.formData['holdCardImageUrl'] = data.fullPath;
+        this.formData['holdCardImageId'] = data.id;
+      },
+      beforeAvatarUpload(file) {
         console.log(file);
-        const { type } = file;
+        const {type} = file;
         if (!/jpeg|png|jpg|bmp/ig.test(type)) {
           this.$message({
             message: '请上传jpeg、png、jpg、bmpg格式的文件',
@@ -126,10 +139,9 @@
       },
       submit() {
         // 提交信息
-        this.$request.post('', this.formData).then(data=> {
+        this.$request.post('getIdCard', this.formData).then(data => {
           this.$router.back();
         });
-
       }
     }
   }
@@ -138,35 +150,42 @@
 <style scoped lang="less">
     .wrapper {
         height: 100%;
+
         .content {
             padding-top: 2.75rem;
             padding-bottom: 3.5rem;
             box-sizing: border-box;
+
             .title {
                 height: 40px;
                 line-height: 40px;
                 text-align: center;
                 font-size: 12px;
             }
+
             .section {
                 background: #fff;
                 padding: 10px;
                 box-sizing: border-box;
+
                 .el-row {
                     height: 40px;
                     line-height: 40px;
                     font-size: 16px;
                     border-bottom: 1px solid #eee;
                     color: #4c4c4c;
+
                     &:last-child {
                         border-bottom: none;
                     }
+
                     input {
                         text-align: right;
                         color: #333;
                         width: 100%;
                     }
                 }
+
                 .panel {
                     margin: 10px 0;
                     padding: 10px;
@@ -176,6 +195,7 @@
                 }
             }
         }
+
         footer {
             position: fixed;
             bottom: 0;
@@ -184,14 +204,17 @@
             width: 100%;
             line-height: 3.5rem;
             text-align: center;
+
             .el-button {
                 width: 90%;
             }
         }
     }
+
     .avatar-uploader {
         text-align: center;
         position: relative;
+
         .el-upload__text {
             width: 100%;
             font-size: 12px;
@@ -202,16 +225,19 @@
             color: #C0C4CC;
         }
     }
-    .avatar-uploader /deep/.el-upload {
+
+    .avatar-uploader /deep/ .el-upload {
         border: 1px dashed #d9d9d9;
         border-radius: 6px;
         cursor: pointer;
         position: relative;
         overflow: hidden;
     }
+
     .avatar-uploader .el-upload:hover {
         border-color: #409EFF;
     }
+
     .avatar-uploader-icon {
         font-size: 28px;
         color: #8c939d;
@@ -220,6 +246,7 @@
         line-height: 178px;
         text-align: center;
     }
+
     .avatar {
         width: 178px;
         height: 178px;

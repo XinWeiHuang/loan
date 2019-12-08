@@ -30,50 +30,57 @@
         </div>
 
         <ul class="listCom list-arrow list-icon mt20">
-            <listComponent v-for="(item, index) in lists" :key='index' :class="item.cls" :title="item.tit" @click="$router.push(item.url)"></listComponent>
+            <listComponent v-for="(item, index) in lists" :key='index' :class="item.cls" :title="item.tit"
+                           @click="$router.push(item.url)"></listComponent>
         </ul>
         <footerComponent :idx="2"></footerComponent>
     </div>
 </template>
 
 <script type="application/ecmascript">
-    export default {
-        data: function () {
-            return {
-                lists: [
-                    {cls:'icon iconfont icon-un-mine-o',tit:'我的资料',url: { name: 'info' } },
-                    {cls:'icon-jiekuan',tit:'我的借款',url: { name: 'loanProgress' }},
-                    {cls:'icon-huankuan',tit:'我的还款',url: { name: 'repayment' }},
-                    {cls:'icon iconfont icon-un-complain-o',tit:'修改密码',url: { name: 'editPassword' }},
-                    /*{cls:'icon-jiangli',tit:'我的奖励',url:''},*/
-                    {cls:'icon-help',tit:'帮助中心',url: { name: 'about' }},
-                    /*{cls:'icon-yijian',tit:'意见反馈',url:''},*/
-                    {cls:'icon-about',tit:'关于我们',url:''},
-                ],
-                userName: '不如'
-            }
-        },
-        methods: {
-          handleUserIcon() {
-            this.$router.push({ name: 'info' })
-          },
-          getUserHead() {
-            return require('../../../static/img/default_user.png')
-          }
-        }
+  export default {
+    data: function () {
+      return {
+        lists: [
+          {cls: 'icon iconfont icon-un-mine-o', tit: '我的资料', url: {name: 'info'}},
+          {cls: 'icon-jiekuan', tit: '我的借款', url: {name: 'loanProgress'}},
+          {cls: 'icon-huankuan', tit: '我的还款', url: {name: 'repayment'}},
+          {cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},
+          /*{cls:'icon-jiangli',tit:'我的奖励',url:''},*/
+          {cls: 'icon-help', tit: '帮助中心', url: {name: 'about'}},
+          /*{cls:'icon-yijian',tit:'意见反馈',url:''},*/
+          {cls: 'icon-about', tit: '关于我们', url: ''},
+        ],
+        userName: '不如'
+      }
+    },
+    created() {
+      this.userName = this.$store.state.userInfo.name;
+    },
+    methods: {
+      handleUserIcon() {
+        this.$router.push({name: 'info'})
+      },
+      getUserHead() {
+        return require('../../../static/img/default_user.png')
+      }
     }
+  }
 </script>
 <style lang="less" scoped>
     @import '~@/common/var.less';
+
     .container {
         &:before {
             height: auto;
         }
+
         .user-info {
             height: 175px;
             /*background: #3BC67D;*/
             background: @themeColor;
             position: relative;
+
             .user-img {
                 width: 64px;
                 height: 64px;
@@ -84,11 +91,13 @@
                 top: 45%;
                 transform: translate(-50%, -50%);
                 overflow: hidden;
+
                 img {
                     width: 100%;
                     height: 100%;
                 }
             }
+
             .user-name {
                 position: absolute;
                 top: 70%;
@@ -104,9 +113,10 @@
             margin: -20px auto;
             position: relative;
             z-index: 99;
-            background:rgba(255,255,255,1);
-            box-shadow:0px 2px 6px 0px rgba(233,233,233,1);
-            border-radius:4px;
+            background: rgba(255, 255, 255, 1);
+            box-shadow: 0px 2px 6px 0px rgba(233, 233, 233, 1);
+            border-radius: 4px;
+
             li {
                 border: 0;
             }

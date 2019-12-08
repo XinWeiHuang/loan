@@ -46,7 +46,7 @@ export const global = {
     localStorage.setItem(key, JSON.stringify(value))
   },
   getLocal(key) {
-    return  JSON.parse(localStorage.getItem(key))
+    return JSON.parse(localStorage.getItem(key))
   },
   removeLocal(key) {
     localStorage.removeItem(key)
@@ -55,20 +55,23 @@ export const global = {
     sessionStorage.setItem(key, JSON.stringify(value))
   },
   getSession(key) {
-    return  JSON.parse(sessionStorage.getItem(key))
+    return JSON.parse(sessionStorage.getItem(key))
   },
   removeSession(key) {
     sessionStorage.removeItem(key)
   }
 };
 
-export const location = 'http://localhost:8080/' // 服务器地址
+export const location = 'http://192.168.1.106:8082/' // 服务器地址
 const requestUrl = {
   user: {
     login: '',
     register: '',
     getIdCard: 'idCard',
     updateIdCard: 'idCard',
+  },
+  resource: {
+    verification: 'verification'
   }
 }
 const getRequestUrl = (url) => {
@@ -77,7 +80,7 @@ const getRequestUrl = (url) => {
     const second = requestUrl[i]
     for (let n in second) {
       if (url === n) {
-         return location + controller + '/' + second[n]
+        return location + controller + '/' + second[n]
       }
     }
   }
@@ -88,54 +91,63 @@ let handler = {
   get(target, property) {
     ['get', 'post'].forEach((methods) => {
       target[methods] = (url, data = {}, params = {}) => {
-        const reqUrl = getRequestUrl(url);
-        if (!reqUrl) return;
-        if (methods == 'get') {
-          debugger;
-          return new Promise((resolve, reject)=> {
-            $.ajax({
-              method: methods,
-              url: reqUrl,
-              dataType: 'jsonp',
-              data,
-              headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
-              },
-              jsonp: 'callbackparam',
-              success(res) {
-                if (params.ns) {
-                  resolve(res)
-                }
-                if (res instanceof Object) {
-                  if (res.success) {
-                    if (!params.all) {
-                      resolve(res.model, res);
+        /*  if (methods == 'get') {
+            return new Promise((resolve, reject)=> {
+              $.ajax({
+                method: methods,
+                url: reqUrl,
+                dataType: 'jsonp',
+                data,
+                headers: {
+                  'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+                },
+                jsonp: 'callbackparam',
+                success(res) {
+                  if (params.ns) {
+                    resolve(res)
+                  }
+                  if (res instanceof Object) {
+                    if (res.success) {
+                      if (!params.all) {
+                        resolve(res.model, res);
+                      } else {
+                        resolve(res);
+                      }
                     } else {
-                      resolve(res);
+                      reject(res.msg);
                     }
                   } else {
-                    reject(res.msg);
+                    resolve(res);
                   }
-                } else {
-                  resolve(res);
+                },
+                error(error) {
+                  reject(error);
                 }
-              },
-              error(error) {
-                reject(error);
-              }
+              })
             })
-          })
-        } else {
-          return axios({
+          } else {*/
+        return new Promise((resolve, reject) => {
+          if (!url) {
+            reject();
+            return;
+          }
+          const reqUrl = getRequestUrl(url);
+          axios.defaults.withCredentials = true;
+          axios({
             method: methods,
-            url,
+            url: reqUrl,
             data: params,
             headers: {
               'Content-Type': 'application/json;charset=UTF-8'
             },
-            params
-          }).then(response => response.data.model).catch(error => error);
-        }
+            params: data
+          }).then(response => {
+              resolve(response.data)
+            }
+          ).catch(error => {
+            reject(error);
+          });
+        })
       }
     })
     return target[property];

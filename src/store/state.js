@@ -16,7 +16,8 @@ export const state = {
         loser:false
     },
     userInfo: {
-        id: '9527'
+        id: '9527',
+        name: ''
     },
     tempDesCont:'',   //借款描述暂存
     tempApplyOpt:''   //借款申请选择暂存

@@ -15,5 +15,8 @@ export const mutations = {
   },
   setLoanMoney(state, val) {
     state.loanDetail.money = val;
+  },
+  setCustomerInfo(state, data) {
+    state.userInfo = data;
   }
 }

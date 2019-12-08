@@ -3,18 +3,22 @@
         <div class="wrapper">
             <div class="content">
                 <header>
-                    <span :class="{ active: signIn }" @click="signIn = true">登录</span> /
-                    <span :class="{ active: !signIn }" @click="signIn = false">注册</span>
+                    <span :class="{ active: isSignIn }" @click="isSignIn = true">登录</span> /
+                    <span :class="{ active: !isSignIn }" @click="isSignIn = false">注册</span>
                     <div>welcome to ~</div>
                 </header>
-                <section :class="[ signIn ? 'section-sign-in' : 'section-sign-up']">
+                <section :class="[ isSignIn ? 'section-sign-in' : 'section-sign-up']">
                     <transition>
-                        <div v-show="signIn" class="section-group">
-                            <div>
-                                <input type="text" placeholder="输入账号">
+                        <div v-show="isSignIn" class="section-group">
+                            <div :class="{ 'is-error': formKey.phone === false }">
+                                <input type="text" placeholder="输入账号"
+                                       @blur="blurEvent({ prop: 'phone' })"
+                                       v-model="signInFormData.phone">
                             </div>
-                            <div>
-                                <input :type="passType" placeholder="输入密码">
+                            <div :class="{ 'is-error': formKey.password === false }">
+                                <input :type="passType" placeholder="输入密码"
+                                       @blur="blurEvent({ prop: 'password' })"
+                                       v-model="signInFormData.password">
                                 <i :class="['seltarr', passType == 'password' ? 'password_icon_off' : 'password_icon_on' ]"
                                    @click="handleShowPassword()"></i>
                             </div>
@@ -22,7 +26,7 @@
                     </transition>
 
                     <transition>
-                        <div v-show="!signIn" class="section-group">
+                        <div v-show="!isSignIn" class="section-group">
                             <div v-for='col in singUpFormItem' :key="col.prop"
                                  :class="{ 'is-error': formKey[col.prop] === false }">
                                 <input type="text" v-model="signUpFormData[col.prop]" :placeholder="col.placeholder"
@@ -35,9 +39,9 @@
 
 
                 </section>
-                <footer :class="[ signIn ? 'footer-sign-in' : 'footer-sign-up']">
+                <footer :class="[ isSignIn ? 'footer-sign-in' : 'footer-sign-up']">
                     <el-button @click="formSubmit">确定</el-button>
-                    <div v-if="signIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>
+                    <div v-if="isSignIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>
                 </footer>
             </div>
         </div>
@@ -52,19 +56,24 @@
                 :before-close="handleClose">
             <div class="content">
                 <div class="group" :class="{ 'is-error': resetFormKey.phone === false }">
-                    <input type="text" v-model="resetFormData.phone" @blur="resetBlurEvent('phone')" placeholder="请输入手机号">
+                    <input type="text" v-model="resetFormData.phone" @blur="resetBlurEvent('phone')"
+                           placeholder="请输入手机号">
                 </div>
                 <div class="group yzm" :class="{ 'is-error': resetFormKey.yzm === false }">
                     <input type="text" v-model="resetFormData.yzm" @blur="resetBlurEvent('yzm')" placeholder="请输入验证码">
-                    <el-button type="primary" size="mini" :disabled="resetYzmDisabled" @click="getVerificationCode">{{ VerificationText }}</el-button>
+                    <el-button type="primary" size="mini" :disabled="resetYzmDisabled" @click="getVerificationCode">{{
+                        VerificationText }}
+                    </el-button>
                 </div>
 
                 <div class="group" :class="{ 'is-error': resetFormKey.password === false }">
-                    <input type="text" v-model="resetFormData.password" @blur="resetBlurEvent('password')" placeholder="请输入新密码">
+                    <input type="text" v-model="resetFormData.password" @blur="resetBlurEvent('password')"
+                           placeholder="请输入新密码">
                 </div>
 
                 <div class="group" :class="{ 'is-error': resetFormKey.newPassword === false }">
-                    <input type="text" v-model="resetFormData.newPassword" @blur="resetBlurEvent('newPassword')" placeholder="再次请输入新密码">
+                    <input type="text" v-model="resetFormData.newPassword" @blur="resetBlurEvent('newPassword')"
+                           placeholder="再次请输入新密码">
                 </div>
             </div>
             <span slot="footer" class="dialog-footer">
@@ -77,7 +86,7 @@
 
 <script>
   import request from "../../util/utils";
-
+  import { location } from '@/util/utils.js'
   const resetPassword = {
     data() {
       return {
@@ -88,14 +97,33 @@
           password: '',
           newPassword: ''
         },
+        signInFormData: {
+          phone: '',
+          password: ''
+        },
         resetFormKey: {},
         VerificationText: '发送验证码',
         resetYzmDisabled: false,
         resetFormItem: []
       }
     },
+    watch: {
+      isSignIn: {
+        handler(val) {
+          let fromData = {};
+          const {formKey} = this;
+          if (val) {
+            fromData = this.signInFormData
+          } else {
+            fromData = this.signUpFormData
+          }
+          Object.keys(fromData).forEach(key => this.$set(formKey, key, undefined));
+        },
+        immediate: true
+      },
+    },
     created() {
-      const { resetFormKey, resetFormData } = this;
+      const {resetFormKey, resetFormData} = this;
       const _this = this;
       Object.keys(resetFormData).forEach(key => this.$set(resetFormKey, key, undefined));
       this.resetFormItem = [
@@ -132,8 +160,8 @@
     },
     methods: {
       resetDialogSubmit() {
-        const { resetFormData } = this;
-        Object.keys(resetFormData).forEach(key=> {
+        const {resetFormData} = this;
+        Object.keys(resetFormData).forEach(key => {
           if (!resetFormData[key]) {
             this.resetFormKey[key] = false
           }
@@ -151,13 +179,13 @@
       },
 
       getVerificationCode() {
-        this.$request.get('').then(data=> { // 验证码
+        this.$request.get('').then(data => { // 验证码
 
         });
 
         let n = 60;
         clearInterval(timer);
-        const timer = setInterval(()=> {
+        const timer = setInterval(() => {
           if (!n) {
             clearInterval(timer);
             this.resetYzmDisabled = false;
@@ -181,7 +209,7 @@
         title: '登录',
         activeName: 'first',
         passType: 'password',
-        signIn: true,
+        isSignIn: true,
         imgVerifyCodeSrc: '',
         signUpFormData: {
           phone: '',
@@ -195,9 +223,9 @@
     },
     created() {
       const _this = this;
-      const {signUpFormData, formKey} = this;
-      Object.keys(signUpFormData).forEach(key => this.$set(formKey, key, undefined));
-
+      // const {signUpFormData, formKey} = this;
+      // Object.keys(signUpFormData).forEach(key => this.$set(formKey, key, undefined));
+      this.getImgVerifyCode();
       this.singUpFormItem = [
         {placeholder: '输入手机号', prop: 'phone'},
         {
@@ -231,7 +259,14 @@
     },
     methods: {
       blurEvent(col) {
-        this.formKey[col.prop] = this.signUpFormData[col.prop] ? true : false;
+        const {isSignIn, signInFormData, signUpFormData} = this;
+        let formData = {};
+        if (isSignIn) {
+          formData = signInFormData
+        } else {
+          formData = signUpFormData
+        }
+        this.formKey[col.prop] = formData[col.prop] ? true : false;
       },
       getMessageVerifyCode() {
         // 短信验证码
@@ -239,32 +274,58 @@
 
       getImgVerifyCode() {
         // 图片验证码
+        this.imgVerifyCodeSrc = location + 'resource/verification?callbackparam=jQuery34106161523676636267_1575792352842&_=' + new Date().getTime();
         // imgVerifyCodeSrc
       },
 
       formSubmit() {
-        const {signUpFormData} = this;
-        Object.keys(signUpFormData).forEach(key => {
-          if (signUpFormData[key] === '') {
+        const {signUpFormData, signInFormData, isSignIn} = this;
+        let fromData = {};
+        if (isSignIn) {
+          fromData = signInFormData
+        } else {
+          fromData = signUpFormData
+        }
+        Object.keys(fromData).forEach(key => {
+          if (fromData[key] === '') {
             this.formKey[key] = false;
           }
         });
         if (!Object.values(this.formKey).includes(false)) {
-            var url = 'register'
-            if (signIn) {
-                url = 'login';
-                request.get(url, signUpFormData);
-            } else {
-                url = "registry";
-                request.post(url, signUpFormData);
-            }
-            //TODO save user info
+          let url = 'register';
+          if (isSignIn) {
+            url = 'login';
+            request.get(url, fromData).then((data) => {
+              if(data.code) {
+                this.$message({
+                  type: data.code == 0 ? 'success' : false,
+                  message: data.msg
+                });
+              } else {
+                this.$store.commit('setCustomerInfo', data.data);
+                this.$router.push({path: '/'})
+              }
+            });
+          } else {
+            url = "registry";
+            request.post(url, fromData).then(data => {
+              this.$message({
+                type: data.code == 0 ? 'success' : false,
+                message: data.msg
+              });
+              if (!data.code) {
+                this.isSignIn = true;
+              }
+            });
+          }
         }
-        this.$router.push({path: '/'})
       },
 
       handleShowPassword() {
         this.passType = this.passType === 'password' ? 'text' : 'password';
+      },
+      handleClose() {
+
       }
     }
   }
@@ -432,6 +493,7 @@
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
+
                 .content {
                     .group {
                         width: 100%;
@@ -442,11 +504,14 @@
                         margin-bottom: 20px;
                         position: relative;
                         transition: all 0.1s linear;
+
                         &.is-error {
-                          border-bottom: 1px solid red;
+                            border-bottom: 1px solid red;
                         }
+
                         &.yzm {
                             position: relative;
+
                             .el-button {
                                 position: absolute;
                                 right: 5px;
