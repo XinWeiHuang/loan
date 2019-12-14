@@ -213,8 +213,8 @@
         imgVerifyCodeSrc: '',
         signUpFormData: {
           phone: '',
-          imgVerifyCode: '',
-          messageVerifyCode: '',
+          verifyCode: '',
+          messageCode: '',
           password: ''
         },
         formKey: {},
@@ -229,14 +229,14 @@
       this.singUpFormItem = [
         {placeholder: '输入手机号', prop: 'phone'},
         {
-          placeholder: '输入图片验证码', prop: 'imgVerifyCode', render(h, scope) {
+          placeholder: '输入图片验证码', prop: 'verifyCode', render(h, scope) {
             return (
               <img src={_this.imgVerifyCodeSrc} onClick={() => _this.getImgVerifyCode()} class='verify-code'/>
             )
           }
         },
         {
-          placeholder: '输入短信验证码', prop: 'messageVerifyCode', render(h, scope) {
+          placeholder: '输入短信验证码', prop: 'messageCode', render(h, scope) {
             return (
               <el-button
                 onClick={() => _this.getMessageVerifyCode()}
@@ -270,6 +270,21 @@
       },
       getMessageVerifyCode() {
         // 短信验证码
+        const { phone } = this.signUpFormData;
+        if (!phone) {
+          return this.$message({
+            type: 'warning',
+            message: '请输入手机号'
+          })
+        }
+        this.$request.get('messageCode', { phone }).then(res=> {
+          if (res.code) {
+            this.$message({
+              type: 'error',
+              message: res.msg
+            });
+          }
+        })
       },
 
       getImgVerifyCode() {
@@ -292,10 +307,10 @@
           }
         });
         if (!Object.values(this.formKey).includes(false)) {
-          let url = 'register';
+          let url = 'registry';
           if (isSignIn) {
             url = 'login';
-            request.get(url, fromData).then((data) => {
+            this.$request.get(url, fromData).then((data) => {
               if(data.code) {
                 this.$message({
                   type: data.code == 0 ? 'success' : false,
@@ -308,7 +323,7 @@
             });
           } else {
             url = "registry";
-            request.post(url, fromData).then(data => {
+            this.$request.post(url, fromData).then(data => {
               this.$message({
                 type: data.code == 0 ? 'success' : false,
                 message: data.msg

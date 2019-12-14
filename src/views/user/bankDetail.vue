@@ -30,32 +30,48 @@
     data() {
       return {
         formData: {
-          name: '',
-          idCode: ''
+          owner: '',
+          ownerIdcard: '',
+          openBank: '',
+          carNo: ''
         },
         formLayout: [],
       }
     },
     created() {
       // const { id } = this.$store.userInfo; 暂时先注释，不然会报错，用的时候在放开
-      const id = '';
       this.formLayout = [
-        { label: '持卡人姓名', prop: '' },
-        { label: '持卡人身份账号', prop: '' },
-        { label: '开户银行', prop: '' },
-        { label: '银行卡卡号', prop: '' }
+        { label: '持卡人姓名', prop: 'owner' },
+        { label: '持卡人身份账号', prop: 'ownerIdcard' },
+        { label: '开户银行', prop: 'openBank' },
+        { label: '银行卡卡号', prop: 'carNo' }
       ];
 
       // 获取用户信息，赋值给formData
-      this.$request.get('', { id }).then(data=> {
-
+      this.$request.get('getBankCard').then(data=> {
+        if (!data.code) {
+          this.formData = data.data;
+        } else {
+          this.$message({
+            type: 'error',
+            message: data.msg
+          })
+        }
       });
     },
     methods: {
       submit() {
         // 提交信息
-        this.$request.post('', this.formData).then(data=> {
-          this.$router.back();
+        this.$request.post('postBankCard', this.formData).then(data=> {
+          console.log(data);
+          if (!data.code) {
+            this.$router.back();
+          } else {
+            this.$message({
+              type: 'error',
+              message: data.msg
+            })
+          }
         });
 
       }

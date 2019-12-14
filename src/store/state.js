@@ -8,7 +8,9 @@ export const state = {
         userWork:false
     },
     loanDetail: { // 贷款的信息
-        money: 0
+        money: 0,
+        monthNum: 0,
+        termMoney: ''
     },
     loanIcons: {
         small:false,
@@ -21,4 +23,4 @@ export const state = {
     },
     tempDesCont:'',   //借款描述暂存
     tempApplyOpt:''   //借款申请选择暂存
-}
+};

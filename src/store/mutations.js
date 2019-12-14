@@ -13,6 +13,9 @@ export const mutations = {
   uploadApplys(state, param) {
     state[param.name] = param.val;
   },
+  setLoanDetail(state, params) {
+    state.loanDetail[params.prop] = params.val;
+  },
   setLoanMoney(state, val) {
     state.loanDetail.money = val;
   },

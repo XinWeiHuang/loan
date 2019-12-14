@@ -31,7 +31,7 @@
 
         <ul class="listCom list-arrow list-icon mt20">
             <listComponent v-for="(item, index) in lists" :key='index' :class="item.cls" :title="item.tit"
-                           @click="$router.push(item.url)"></listComponent>
+                           @click="routerClick(item)"></listComponent>
         </ul>
         <footerComponent :idx="2"></footerComponent>
     </div>
@@ -50,6 +50,7 @@
           {cls: 'icon-help', tit: '帮助中心', url: {name: 'about'}},
           /*{cls:'icon-yijian',tit:'意见反馈',url:''},*/
           {cls: 'icon-about', tit: '关于我们', url: ''},
+          {cls: 'icon iconfont icon-un-delete-border-o', tit: '退出登录', url: ''},
         ],
         userName: '不如'
       }
@@ -58,6 +59,18 @@
       this.userName = this.$store.state.userInfo.name;
     },
     methods: {
+      routerClick(item) {
+        if (item.tit !== '退出登录') {
+          this.$router.push(item.url)
+        } else {
+          this.$request.post('signout').then(res=> {
+            if (!res.code) {
+              localStorage.clear()
+            }
+            this.$router.push({ name: 'login' })
+          });
+        }
+      },
       handleUserIcon() {
         this.$router.push({name: 'info'})
       },

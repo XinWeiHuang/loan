@@ -62,26 +62,52 @@ export const global = {
   }
 };
 
-export const location = 'http://192.168.1.106:8082/' // 服务器地址
+// export const location = 'http://192.168.2.104:8080/' // 服务器地址
+export const location = 'http://192.168.2.107:8080/' // 服务器地址
 const requestUrl = {
   user: {
-    getLogin: '',
-    postRegister: '',
+    login: '',
+    registry: '',
     getIdCard: 'idCard',
-<<<<<<< HEAD
     updateIdCard: 'idCard',
+    info: 'info',
+    messageCode: 'messageCode',
+  },
+  admin: {
+    signout: 'signout'
+  },
+  bankCard: {
+    getBankCard: '',
+    postBankCard: ''
+  },
+  loan: {
+    getLoan: '',
+    processing: 'processing',
+    postLoan: '',
+    getLogs: 'getLogs',
+    findById: 'findById'
   },
   resource: {
     verification: 'verification'
-=======
-    postIdCard: 'idCard',
->>>>>>> 2dc9945de0019c23e7555e3f6db462cd48817135
+  },
+  workInfo: {
+    getWorkInfo: ''
+  },
+  contact: {
+    main: 'main',
+    other: 'other'
+  },
+  loanRate: {
+    getLoanRate: 'find'
+  },
+  system: {
+    getloanRange: 'getloanRange'
   }
 }
 const getRequestUrl = (url) => {
   for (let i in requestUrl) {
-    const controller = i
-    const second = requestUrl[i]
+    const controller = i;
+    const second = requestUrl[i];
     for (let n in second) {
       if (url === n) {
         return location + controller + '/' + second[n]
