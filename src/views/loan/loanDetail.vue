@@ -56,7 +56,7 @@
           });
         }
         const {money, monthNum, termMoney} = this.$store.state.loanDetail;
-        this.$request.post('postLoan', {}, {'money': this.money, 'monthNum': this.monthNum, 'termMoney': this.termMoney}).then(res => {
+        this.$request.post('postLoan', {'money': this.money, 'monthNum': this.monthNum, 'termMoney': this.termMoney}).then(res => {
           this.$message({
             showClose: true,
             message: res.msg,

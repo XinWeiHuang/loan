@@ -65,7 +65,7 @@
         } else {
           this.$request.post('signout').then(res=> {
             if (!res.code) {
-              localStorage.clear()
+              sessionStorage.clear()
             }
             this.$router.push({ name: 'login' })
           });

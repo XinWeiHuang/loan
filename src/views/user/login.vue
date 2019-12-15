@@ -32,7 +32,7 @@
                         <div v-show="!isSignIn" class="section-group">
                             <div v-for='col in singUpFormItem' :key="col.prop"
                                  :class="{ 'is-error': formKey[col.prop] === false }">
-                                <input type="text" v-model="signUpFormData[col.prop]" :placeholder="col.placeholder"
+                                <input :type="col.type" v-model="signUpFormData[col.prop]" :placeholder="col.placeholder"
                                        @blur="blurEvent(col)">
                                 <v-render v-if="col.render" :col="col" :row="signUpFormData"
                                           :render="col.render"></v-render>
@@ -221,7 +221,10 @@
           password: ''
         },
         formKey: {},
-        singUpFormItem: []
+        singUpFormItem: [],
+        VerifyCodeMessage: '发送验证码',
+        VerifyCodeDisabled: false,
+        timer: null
       }
     },
     created() {
@@ -245,18 +248,18 @@
                 onClick={() => _this.getMessageVerifyCode()}
                 type="primary"
                 size="mini"
-                class="verify-code btn">获取验证码
-              </el-button>
+                disabled={ _this.VerifyCodeDisabled  }
+                class="verify-code btn">{ _this.VerifyCodeMessage }</el-button>
             )
           }
         },
         {
-          placeholder: '设置6-16位密码', prop: 'password', render(h, scope) {
+          placeholder: '设置6-16位密码', type: 'password', prop: 'password'/*, render(h, scope) {
             return (
               <i onClick={() => _this.handleShowPassword()}
                  class={['seltarr', _this.passType == 'password' ? 'password_icon_off' : 'password_icon_on']}></i>
             )
-          }
+          }*/
         },
       ]
     },
@@ -280,6 +283,21 @@
             message: '请输入手机号'
           })
         }
+        clearInterval(this.timer);
+        // VerifyCodeMessage
+        let num = 60;
+        this.timer = setInterval(()=> {
+          if (num > 0) {
+            num--;
+            this.VerifyCodeDisabled = true;
+            this.VerifyCodeMessage = num + '秒后重新发送'
+          } else {
+            clearInterval(this.timer);
+            this.VerifyCodeDisabled = false;
+            this.VerifyCodeMessage = '发送验证码';
+          }
+        }, 1000);
+
         this.$request.get('messageCode', { phone }).then(res=> {
           if (res.code) {
             this.$message({
