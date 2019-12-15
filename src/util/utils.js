@@ -62,8 +62,8 @@ export const global = {
   }
 };
 
-// export const location = 'http://192.168.2.104:8080/' // 服务器地址
-export const location = 'http://192.168.2.107:8080/' // 服务器地址
+export const location = 'http://47.106.228.71:8080/' // 服务器地址
+//export const location = 'http://192.168.2.107:8080/' // 服务器地址
 const requestUrl = {
   user: {
     login: '',
