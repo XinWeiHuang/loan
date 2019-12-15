@@ -1,4 +1,5 @@
 import axios from 'axios'
+import qs from 'qs'
 // const { interfaceUrl } = require('../../static/config')
 // export const location = interfaceUrl;
 export const global = {
@@ -62,7 +63,7 @@ export const global = {
   }
 };
 
-export const location = 'http://47.106.228.71:8080/' // 服务器地址
+export const location = 'http://192.168.2.102:8080/' // 服务器地址
 //export const location = 'http://192.168.2.107:8080/' // 服务器地址
 const requestUrl = {
   user: {
@@ -91,9 +92,11 @@ const requestUrl = {
     verification: 'verification'
   },
   workInfo: {
-    getWorkInfo: ''
+    getWorkInfo: '',
+    postWorkInfo: ''
   },
   contact: {
+    get: '',
     main: 'main',
     other: 'other'
   },
@@ -102,6 +105,10 @@ const requestUrl = {
   },
   system: {
     getloanRange: 'getloanRange'
+  },
+  wallet: {
+    getWallet: '',
+    draw: 'draw'
   }
 }
 const getRequestUrl = (url) => {
@@ -120,7 +127,7 @@ const getRequestUrl = (url) => {
 let handler = {
   get(target, property) {
     ['get', 'post'].forEach((methods) => {
-      target[methods] = (url, data = {}, params = {}) => {
+      target[methods] = (url, data = {}) => {
         /*  if (methods == 'get') {
             return new Promise((resolve, reject)=> {
               $.ajax({
@@ -163,14 +170,21 @@ let handler = {
           }
           const reqUrl = getRequestUrl(url);
           axios.defaults.withCredentials = true;
+          let contentType = '';
+          if (methods == 'get') {
+            contentType = 'application/json;charset=UTF-8'
+          } else {
+            contentType = 'application/x-www-form-urlencoded'
+          }
           axios({
             method: methods,
             url: reqUrl,
-            data: params,
+            // data: qs.stringify(data),
+            data,
             headers: {
               'Content-Type': 'application/json;charset=UTF-8'
             },
-            params: data
+            params: methods == 'get' ? data : false
           }).then(response => {
               resolve(response.data)
             }

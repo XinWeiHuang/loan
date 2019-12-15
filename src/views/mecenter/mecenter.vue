@@ -33,7 +33,7 @@
             <listComponent v-for="(item, index) in lists" :key='index' :class="item.cls" :title="item.tit"
                            @click="routerClick(item)"></listComponent>
         </ul>
-        <footerComponent :idx="2"></footerComponent>
+        <footerComponent :idx="3"></footerComponent>
     </div>
 </template>
 
@@ -45,7 +45,7 @@
           {cls: 'icon iconfont icon-un-mine-o', tit: '我的资料', url: {name: 'info'}},
           {cls: 'icon-jiekuan', tit: '我的借款', url: {name: 'loanProgress'}},
           {cls: 'icon-huankuan', tit: '我的还款', url: {name: 'repayment'}},
-          {cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},
+          /*{cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},*/
           /*{cls:'icon-jiangli',tit:'我的奖励',url:''},*/
           {cls: 'icon-help', tit: '帮助中心', url: {name: 'about'}},
           /*{cls:'icon-yijian',tit:'意见反馈',url:''},*/

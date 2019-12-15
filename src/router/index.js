@@ -101,8 +101,14 @@ export default new Router({
           path: 'customer',
           component: home,
           children: [
-            {path: '/', component: resolve => require(['@/views/user/customerInfo.vue'], resolve)},
-          
+            {path: '/', component: resolve => require(['@/views/user/customerInfo.vue'], resolve)}
+          ]
+        },
+        {
+          path: 'wallet',
+          component: home,
+          children: [
+            {path: '/', component: resolve => require(['@/views/user/wallet.vue'], resolve)}
           ]
         }
       ]

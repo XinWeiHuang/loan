@@ -59,11 +59,11 @@
   *
   * */
   const relationSelect = [
-    {label: '朋友', prop: '0'},
-    {label: '姐妹', prop: '1'},
-    {label: '兄弟', prop: '2'},
-    {label: '父母', prop: '3'},
-    {label: '夫妻', prop: '4'}
+    {label: '朋友', prop: 0},
+    {label: '姐妹', prop: 1},
+    {label: '兄弟', prop: 2},
+    {label: '父母', prop: 3},
+    {label: '夫妻', prop: 4}
   ];
   export default {
     name: "userDetail",
@@ -81,7 +81,7 @@
       }
     },
     created() {
-      const {id, mainContact, otherContact} = this.$store.state.userInfo;
+      const {workInfo, education, mainContact, otherContact} = this.$store.state.userInfo;
       this.formLayout1 = [
         {label: '学历', prop: 'education'},
         {label: '公司名称', prop: 'companyName'},
@@ -103,11 +103,15 @@
       ];
 
       // 获取用户信息，赋值给formData
-      this.$request.get('getWorkInfo', {id}).then(data => {
-
+      this.$request.get('getWorkInfo', {id: workInfo}).then(res => {
+        if (!res.code) {
+          this.formData = res.data || {};
+          this.formData['education'] = education;
+        }
       });
       // 直系联系人
-      this.$request.get('main', {id: mainContact}).then(res => {
+      console.log(mainContact)
+      this.$request.get('get', {id: mainContact}).then(res => {
         if (!res.code) {
           return this.formDataMain = res.data;
         }
@@ -117,7 +121,7 @@
         });
       });
       // 其他联系人
-      this.$request.get('other', {id: otherContact}).then(res => {
+      this.$request.get('get', {id: otherContact}).then(res => {
         if (!res.code) {
           return this.formDataOther = res.data;
         }
@@ -130,7 +134,7 @@
     methods: {
       submit() {
         // 提交信息
-        this.$request.post('', this.formData).then(res => {
+        this.$request.post('postWorkInfo', this.formData).then(res => {
           if (res.code) {
             return this.$message({
               type: 'error',
@@ -148,7 +152,7 @@
           }
           this.$store.dispatch('getCustomerInfo');
         });
-        this.$request.post('main', this.formDataOther).then(res => {
+        this.$request.post('other', this.formDataOther).then(res => {
           if (res.code) {
             return this.$message({
               type: 'error',

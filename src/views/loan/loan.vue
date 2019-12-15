@@ -15,7 +15,7 @@
                 </div>
                 <div class="term">
                     <div class="term-date" v-for="row in termList">
-                        <el-button size="mini" v-for="item in row" @click="handleTermClick(item)">{{ item.label }}
+                        <el-button size="mini" v-for="(item, index) in row" :class="{ active: item.active }" @click="handleTermClick(item, row)">{{ item.label }}
                         </el-button>
                     </div>
                 </div>
@@ -236,7 +236,8 @@
           row.forEach(item=> {
             item['label'] = item.month + "月";
             item['value'] = item.month;
-            item['rate'] = item.rate / 10000
+            item['rate'] = item.rate / 10000;
+            item['active'] = false;
           })
         });
         this.termList = data;
@@ -281,7 +282,11 @@
         });*/
 
       },
-      handleTermClick(item) {
+      handleTermClick(item, row) {
+        row.forEach(item=> {
+            item['active'] = false;
+        });
+        item.active = true;
         this.currentItem = item;
         this.getMoneyRate();
         this.$store.commit('setLoanDetail', {prop: 'monthNum', val: item.value})
@@ -337,6 +342,11 @@
                     button {
                         width: 16.6%;
                         margin-bottom: 3px;
+                        &.active {
+                            color: #3a8ee6;
+                            border-color: #3a8ee6;
+                            outline: 0;
+                        }
                     }
                 }
 

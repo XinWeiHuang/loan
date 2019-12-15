@@ -16,11 +16,14 @@
                                        v-model="signInFormData.phone">
                             </div>
                             <div :class="{ 'is-error': formKey.password === false }">
-                                <input :type="passType" placeholder="输入密码"
+                                <!--<input :type="passType" placeholder="输入密码"
                                        @blur="blurEvent({ prop: 'password' })"
                                        v-model="signInFormData.password">
                                 <i :class="['seltarr', passType == 'password' ? 'password_icon_off' : 'password_icon_on' ]"
-                                   @click="handleShowPassword()"></i>
+                                   @click="handleShowPassword()"></i>-->
+                                <input type="password" placeholder="输入密码"
+                                       @blur="blurEvent({ prop: 'password' })"
+                                       v-model="signInFormData.password">
                             </div>
                         </div>
                     </transition>

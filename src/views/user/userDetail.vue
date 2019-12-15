@@ -95,7 +95,7 @@
           oppositeImageUrl: '',
           holdCardImageUrl: '',
         },
-        action: location + "resource",
+        action: location + "resource/upload",
         uploadData: { // 上传附带参数
 
         }

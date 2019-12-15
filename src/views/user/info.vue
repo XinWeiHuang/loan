@@ -58,7 +58,7 @@
               { route: { path: './userDetail' },  icon: require('../../assets/img/g_01.png'), title: '身份信息', describe: '*让我们了解您的基本情况', status: false },
               { route: { path: './personalData' },  icon: require('../../assets/img/g_04.png'), title: '资料信息', describe: '*让我们了解您的资料信息', status: false },
               { route: { path: './bankDetail' },  icon: require('../../assets/img/g_02.png'), title: '收款银行卡', describe: '银行卡号为收款账号也为还款账号', status: false },
-              { route: { path: './phoneDetail' },  icon: require('../../assets/img/g_05.png'), title: '手机号认证', describe: '*认证您本人的手机号', status: false }
+              /*{ route: { path: './phoneDetail' },  icon: require('../../assets/img/g_05.png'), title: '手机号认证', describe: '*认证您本人的手机号', status: false }*/
             ]
           }
         ];
