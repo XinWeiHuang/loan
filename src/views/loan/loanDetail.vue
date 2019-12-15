@@ -6,7 +6,7 @@
             <section>
                 <el-row>
                     <el-col :span="6">借款金额</el-col>
-                    <el-col :span="18">￥{{ $store.state.loanDetail.money }}</el-col>
+                    <el-col :span="18">￥{{ money }}</el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="6">借款期限</el-col>
@@ -32,11 +32,16 @@
     name: "loanDetail",
     data() {
       return {
-        model: false
+        model: false,
+          money: '',
+          monthNum: '',
+          termMoney: '',
+          moneyRate: '',
       }
     },
     created() {
-      const { monthNum, termMoney, moneyRate } = this.$store.state.loanDetail;
+      const { money, monthNum, termMoney, moneyRate } = this.$store.state.loanDetail;
+      this.money = money
       this.monthNum = monthNum;
       this.termMoney = termMoney;
       this.moneyRate = moneyRate;
@@ -51,7 +56,7 @@
           });
         }
         const {money, monthNum, termMoney} = this.$store.state.loanDetail;
-        this.$request.post('postLoan', {}, {money, monthNum, termMoney}).then(res => {
+        this.$request.post('postLoan', {}, {'money': this.money, 'monthNum': this.monthNum, 'termMoney': this.termMoney}).then(res => {
           this.$message({
             showClose: true,
             message: res.msg,

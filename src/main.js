@@ -46,9 +46,8 @@ Object.keys(methods).forEach((key)=>{
   Vue.prototype[key]=methods[key];
 })
 
-const { userInfo } = store.state;
-
 router.beforeEach((to, from, next)=> {
+  const { userInfo } = store.state;
   if (!userInfo.id && to.name !== 'login') {
     next({ name: 'login' })
   } else {
