@@ -224,47 +224,63 @@
       }
     },
     created() {
-      this.$store.commit('setLoanDetail', {prop: 'monthNum', val: 0});
       this.$request.get('getloanRange').then(res => { // 请求金额区间，sliderMin 和 sliderMax是金额区间
         this.sliderMin = res.min;
         this.sliderMax = res.max;
+        this.defaultMonth = res.defaultMonth;
         this.money = res.defaultMoney;
-        this.currentItem = {'month': res.defaultMonth};
-      });
-      this.$request.get('getLoanRate', { split: true }).then(res => {
-        const {data} = res;
-        data.forEach(row => {
-          row.forEach(item=> {
-            item['label'] = item.month + "月";
-            item['value'] = item.month;
-            item['rate'] = item.rate / 10000;
-            item['active'] = false;
-          })
+        this.currentItem = {
+          'month': res.defaultMonth,
+          'money': res.defaultMoney
+        };
+        this.$store.commit('setLoanDetail', {prop: 'monthNum', val: res.defaultMonth});
+        this.$store.commit('setLoanDetail', { prop: 'money', val: res.defaultMoney })
+        this.$request.get('getLoanRate', { split: true }).then(resp => {
+          const {data} = resp;
+          data.forEach(row => {
+            row.forEach(item=> {
+              item['label'] = item.month + "月";
+              item['value'] = item.month;
+              item['rate'] = item.rate / 10000;
+              item['active'] = this.defaultMonth == item.value ? true : false;
+              if (item['value'] == res.defaultMonth) {
+                this.currentItem['rate'] = item.rate;
+                this.currentItem['value'] = item.value;
+              }
+            })
+          });
+          this.termList = data;
+          this.getTermMoney()
         });
-        this.termList = data;
       });
+
       this.termList.forEach((row) => {
           row.forEach(item => {
             if (item.value = _this.currentItem.month) {
-                this.currentItem = {item}
+                this.currentItem = {item};
                 return
             }
           });
-      })
-      this.handleTermClick(_this.currentItem, [])
-      this.$store.commit('setLoanDetail', this.money) // 放在请求中使用，值为slid
+      });
+      // this.handleTermClick(this.currentItem, []);
+      // this.$store.commit('setLoanDetail', this.money) // 放在请求中使用，值为slid
     },
     methods: {
-      getMoneyRate() {
-        const {money} = this.$store.state.loanDetail;
+      getTermMoney() {
+        debugger;
         const {rate} = this.currentItem;
+        const {money} = this.$store.state.loanDetail;
         if (rate && money) {
+          debugger;
           const allMoney = money + money * rate * this.currentItem.value;
           this.moneyRate = rate;
           this.termMoney = (allMoney / this.currentItem.value).toFixed(2);
           this.$store.commit('setLoanDetail', { prop: 'termMoney', val: this.termMoney }); // 每月应还
           this.$store.commit('setLoanDetail', { prop: 'moneyRate', val: rate  }); // 利率
         }
+      },
+      getMoneyRate() {
+        this.getTermMoney()
       },
       handleClose() {
 
