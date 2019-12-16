@@ -63,8 +63,8 @@ export const global = {
   }
 };
 
-export const location = 'http://47.106.228.71:8080/' // 服务器地址
-// export const location = 'http://localhost:8080/' // 服务器地址
+//export const location = 'http://47.106.228.71:8080/' // 服务器地址
+export const location = 'http://localhost:8080/' // 服务器地址
 const requestUrl = {
   user: {
     login: '',
@@ -100,11 +100,9 @@ const requestUrl = {
     main: 'main',
     other: 'other'
   },
-  loanRate: {
-    getLoanRate: 'find'
-  },
   system: {
-    getloanRange: 'getloanRange'
+    getloanRange: 'getloanRange',
+    getLoanRate: 'getMonthRates'
   },
   wallet: {
     getWallet: '',

@@ -194,8 +194,8 @@
     data: function () {
       return {
         money: 0,
-        sliderMin: 5200,
-        sliderMax: 52000,
+        sliderMin: 5000,
+        sliderMax: 50000,
         termMoney: 0,
         lists: [
           {cls: '', tit: '微额借款', con: '金额500、1000元，期限7天、14天、21天', url: '/loan/loanmicro'},
@@ -228,7 +228,8 @@
       this.$request.get('getloanRange').then(res => { // 请求金额区间，sliderMin 和 sliderMax是金额区间
         this.sliderMin = res.min;
         this.sliderMax = res.max;
-        this.money = this.sliderMin;
+        this.money = res.defaultMoney;
+        this.currentItem = {'month': res.defaultMonth};
       });
       this.$request.get('getLoanRate', { split: true }).then(res => {
         const {data} = res;
@@ -242,7 +243,16 @@
         });
         this.termList = data;
       });
-      this.$store.commit('setLoanDetail', 5200) // 放在请求中使用，值为slid
+      this.termList.forEach((row) => {
+          row.forEach(item => {
+            if (item.value = _this.currentItem.month) {
+                this.currentItem = {item}
+                return
+            }
+          });
+      })
+      this.handleTermClick(_this.currentItem, [])
+      this.$store.commit('setLoanDetail', this.money) // 放在请求中使用，值为slid
     },
     methods: {
       getMoneyRate() {
