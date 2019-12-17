@@ -9,6 +9,7 @@
                 <el-steps :active="formData.status" align-center>
                     <el-step v-for="item in stepData" :title="item.curStatusName" icon="el-icon-circle-check"></el-step>
                 </el-steps>
+                <div class="tips">温馨提示：{{ tips }}</div>
                 <div class="detail">
                     <div class="title">借款详情</div>
                     <div class="content">
@@ -33,8 +34,8 @@
           id: ''
         },
         detailCode: '9527',
-        stepData: []
-
+        stepData: [],
+        tips: ''
       }
     },
     created() {
@@ -58,6 +59,7 @@
         console.log(res)
         if (!res.code) {
           this.formData = res.data;
+          this.tips = res.data.tips;
         } else {
           this.$message({
             type: 'error',
@@ -106,7 +108,12 @@
                         font-weight: 400;
                     }
                 }
-
+                .tips {
+                    padding: 10px 0;
+                    border-bottom: 1px solid #eee;
+                    font-size: 12px;
+                    color: #909399;
+                }
                 .detail {
                     margin-top: 20px;
 

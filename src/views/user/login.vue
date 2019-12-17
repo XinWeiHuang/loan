@@ -44,10 +44,10 @@
 
 
                 </section>
-                <!--<footer :class="[ isSignIn ? 'footer-sign-in' : 'footer-sign-up']">
+                <footer :class="[ isSignIn ? 'footer-sign-in' : 'footer-sign-up']">
                     <el-button @click="formSubmit">确定</el-button>
-                    <div v-if="isSignIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>
-                </footer>-->
+                    <!--<div v-if="isSignIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>-->
+                </footer>
             </div>
         </div>
         <footerComponent :idx="3"></footerComponent>

@@ -10,13 +10,24 @@
                     <span class="label">￥</span>
                 </div>
                 <div class="slider">
-                    <el-slider :min="sliderMin" :max="sliderMax" v-model="getLoanMoney"
-                               :show-tooltip="false"></el-slider>
+                    <div class="slider-operation">
+                        <el-button size="mini" icon="el-icon-circle-plus"></el-button>
+                    </div>
+                    <div class="slider-main">
+                        <el-slider :min="sliderMin" :max="sliderMax" v-model="getLoanMoney"
+                                   :show-tooltip="false"></el-slider>
+                    </div>
+                    <div class="slider-operation">
+                        <el-button size="mini" icon="el-icon-remove"></el-button>
+                    </div>
                 </div>
                 <div class="term">
                     <div class="term-date" v-for="row in termList">
-                        <el-button size="mini" v-for="(item, index) in row" :class="{ active: item.active }" @click="handleTermClick(item, row)">{{ item.label }}
-                        </el-button>
+                        <div v-for="(item, index) in row">
+                            <el-button size="mini"  :class="{ active: item.active }" @click="handleTermClick(item, row)">{{ item.label }}
+                            </el-button>
+                        </div>
+
                     </div>
                 </div>
                 <div class="line"></div>
@@ -365,14 +376,20 @@
 
                 .term-date {
                     margin-bottom: 4px;
-                    button {
-                        width: 16.6%;
+                    overflow: hidden;
+                    >div {
+                        width: 20%;
+                        float: left;
                         margin-bottom: 3px;
-                        &.active {
-                            color: #3a8ee6;
-                            border-color: #3a8ee6;
-                            outline: 0;
+                        button {
+                            width: 95%;
+                            &.active {
+                                color: #3a8ee6;
+                                border-color: #3a8ee6;
+                                outline: 0;
+                            }
                         }
+
                     }
                 }
 
@@ -389,9 +406,28 @@
                 }
 
                 .slider {
-                    width: 80%;
+                    width: 100%;
                     margin: 0 auto;
-
+                    overflow: hidden;
+                    .slider-operation {
+                        float: left;
+                        width: 40px;
+                        text-align: center;
+                        position: relative;
+                        top: 3px;
+                        &:first-child {
+                            text-align: left;
+                        }
+                        /deep/button {
+                            i {
+                                font-size: 14px;
+                            }
+                        }
+                    }
+                    .slider-main {
+                        float: left;
+                        width: calc(100% - 80px);
+                    }
                     .el-slider__runway {
                         margin-top: 10px;
                     }
