@@ -64,7 +64,7 @@ export const global = {
 };
 
 export const location = 'http://47.106.228.71:8080/' // 服务器地址
-// export const location = 'http://n3mdqy.natappfree.cc:80/' // 服务器地址
+//export const location = 'http://localhost:8080/' // 服务器地址
 const requestUrl = {
   user: {
     login: '',
