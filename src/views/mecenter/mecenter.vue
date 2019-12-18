@@ -57,7 +57,8 @@
       }
     },
     created() {
-      this.userName = this.$store.state.userInfo.name;
+      const { name, phone } = this.$store.state.userInfo;
+      this.userName = name ? name : phone;
       this.$request.get('serviceLink').then(res => {
         if (res.code) {
           return this.$message({
