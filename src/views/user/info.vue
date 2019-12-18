@@ -21,7 +21,7 @@
                                 </el-col>
                                 <el-col :span="5">
                                     <div class="f-status">
-                                        <div class="status-name">{{ item.status ? '已填写': '未填写' }}</div>
+                                        <!--<div class="status-name">{{ item.status ? '已填写': '未填写' }}</div>-->
                                         <div class="seltarr">></div>
                                     </div>
                                 </el-col>

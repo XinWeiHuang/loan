@@ -43,7 +43,7 @@
       return {
         lists: [
           {cls: 'icon iconfont icon-un-mine-o', tit: '我的资料', url: {name: 'info'}},
-          {cls: 'icon-jiekuan', tit: '我的借款', url: {name: 'loanProgress'}},
+          /*{cls: 'icon-jiekuan', tit: '我的借款', url: {name: 'loanProgress'}},*/
           {cls: 'icon-huankuan', tit: '我的还款', url: {name: 'repayment'}},
           /*{cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},*/
           /*{cls:'icon-jiangli',tit:'我的奖励',url:''},*/
@@ -60,13 +60,14 @@
       this.userName = this.$store.state.userInfo.name;
       this.$request.get('serviceLink').then(res => {
         if (res.code) {
-          return this.$messageShow({
+          return this.$message({
             type: 'error',
             message: res.msg
           });
           this.serviceUrl = res.data;
         }
       });
+      this.$store.dispatch('getCustomerInfo')
     },
     methods: {
       routerClick(item) {

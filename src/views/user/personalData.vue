@@ -142,7 +142,7 @@
               message: res.msg
             })
           }
-          this.$messageShow({
+          this.$message({
             type: 'success',
             message: res.msg
           });

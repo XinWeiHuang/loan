@@ -326,7 +326,7 @@
         let { rate } = this.currentItem;
         const { money } = this.$store.state.loanDetail;
         if (rate && money) {
-          rate = rate.toFixed(2);
+          rate = (rate*100).toFixed(2);
           const allMoney = money + money * rate * this.currentItem.value;
           this.moneyRate = rate;
           this.termMoney = (allMoney / this.currentItem.value).toFixed(2);
