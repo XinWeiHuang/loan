@@ -62,10 +62,14 @@
             message: res.msg,
             type: 'success'  // 成功设置为 success，失败设置为 error
           });
+          if (!res.code) {
+            this.$router.push({ name: 'loanList' })
+          }
         });
       }
     }
   }
+
 </script>
 
 <style scoped lang="less">

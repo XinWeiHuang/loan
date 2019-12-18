@@ -74,6 +74,7 @@
           name: '',
           idCode: ''
         },
+        showMessage: false,
         formDataMain: {},
         formDataOther: {},
         formLayout1: [],
@@ -110,7 +111,7 @@
         }
       });
       // 直系联系人
-      console.log(mainContact)
+      console.log('----mainContact----', mainContact)
       this.$request.get('get', {id: mainContact}).then(res => {
         if (!res.code) {
           return this.formDataMain = res.data;
@@ -141,6 +142,10 @@
               message: res.msg
             })
           }
+          this.$messageShow({
+            type: 'success',
+            message: res.msg
+          });
           this.$store.dispatch('getCustomerInfo');
         });
         this.$request.post('main', this.formDataMain).then(res => {

@@ -48,27 +48,45 @@
           /*{cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},*/
           /*{cls:'icon-jiangli',tit:'我的奖励',url:''},*/
           {cls: 'icon-help', tit: '帮助中心', url: {name: 'about'}},
-          /*{cls:'icon-yijian',tit:'意见反馈',url:''},*/
+          {cls: ' iconfont icon-un-servicer-o', tit: '联系客服', url: ''},
           {cls: 'icon-about', tit: '关于我们', url: ''},
           {cls: 'icon iconfont icon-un-delete-border-o', tit: '退出登录', url: ''},
         ],
-        userName: '不如'
+        userName: '不如',
+        serviceUrl: ''
       }
     },
     created() {
       this.userName = this.$store.state.userInfo.name;
+      this.$request.get('serviceLink').then(res => {
+        if (res.code) {
+          return this.$messageShow({
+            type: 'error',
+            message: res.msg
+          });
+          this.serviceUrl = res.data;
+        }
+      });
     },
     methods: {
       routerClick(item) {
-        if (item.tit !== '退出登录') {
-          this.$router.push(item.url)
-        } else {
-          this.$request.post('signout').then(res=> {
-            if (!res.code) {
-              sessionStorage.clear()
-            }
-            this.$router.push({ name: 'login' })
-          });
+        switch (item.tit) {
+          case '退出登录':
+            this.$request.post('signout').then(res => {
+              if (!res.code) {
+                sessionStorage.clear()
+              }
+              this.$router.push({name: 'login'})
+            });
+            break;
+
+          case '联系客服':
+            // window.location.href = this.serviceUrl;
+            window.open(this.serviceUrl)
+            break;
+
+          default:
+            this.$router.push(item.url)
         }
       },
       handleUserIcon() {

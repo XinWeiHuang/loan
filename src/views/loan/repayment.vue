@@ -3,11 +3,10 @@
         <top-component title="还款" ></top-component>
         <div class="content">
             <div class="group" v-if="model">
-                <div class="title">11月18日应还（元）</div>
+                <div class="title">{{ date }}</div>
                 <div class="money">{{ money }}</div>
                 <div class="explain">请确保余额储蓄卡账户资金充足，在还款日当天按时还款，以免逾期产生利息。</div>
             </div>
-
             <div class="empty" v-else>
                 <div class="img-box">
                     <img src="../../assets/img/p_01.png" alt="">
@@ -34,13 +33,19 @@
     name: "repayment",
     data() {
       return {
-        money: 520,
-        model: true //
+        money: '00.00',
+        date: '',
+        model: false
       }
     },
     created() {
-        this.$request.get('').then(data=> { //
-
+        this.$request.get('getMonthRefund').then(res=> { //
+            if (res.data) {
+              this.model = true;
+              const { date, model } = res.data;
+              this.date = date;
+              this.model = model;
+            }
         });
     },
     methods: {

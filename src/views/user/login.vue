@@ -352,7 +352,9 @@
                 message: data.msg
               });
               if (!data.code) {
-                this.isSignIn = true;
+                this.$store.commit('setCustomerInfo', data.data);
+                this.$router.push({path: '/'})
+                // this.isSignIn = true;
               }
             });
           }

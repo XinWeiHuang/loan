@@ -86,7 +86,8 @@ const requestUrl = {
     processing: 'processing',
     postLoan: '',
     getLogs: 'getLogs',
-    findById: 'findById'
+    findById: 'findById',
+    getMonthRefund: 'getMonthRefund'
   },
   resource: {
     verification: 'verification'
@@ -107,6 +108,9 @@ const requestUrl = {
   wallet: {
     getWallet: '',
     draw: 'draw'
+  },
+  webInfo: {
+    serviceLink: 'serviceLink'
   }
 }
 const getRequestUrl = (url) => {
