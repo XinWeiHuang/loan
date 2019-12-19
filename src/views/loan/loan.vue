@@ -323,11 +323,12 @@
         this.$store.commit("setLoanDetail", { prop: "money", val: money });
       },
       getTermMoney() {
+          debugger
         let { rate } = this.currentItem;
         const { money } = this.$store.state.loanDetail;
         if (rate && money) {
-          rate = (rate*100).toFixed(2);
           const allMoney = money + money * rate * this.currentItem.value;
+          rate = (rate*100).toFixed(2);
           this.moneyRate = rate;
           this.termMoney = (allMoney / this.currentItem.value).toFixed(2);
           this.$store.commit("setLoanDetail", {

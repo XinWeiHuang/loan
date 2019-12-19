@@ -64,7 +64,7 @@ export const global = {
 };
 
 export const location = 'http://47.106.228.71:8080/' // 服务器地址
-//export const location = 'http://localhost:8080/' // 服务器地址
+//export const location = 'http://192.168.1.100:8080/' // 服务器地址
 const requestUrl = {
   user: {
     login: '',
@@ -113,7 +113,7 @@ const requestUrl = {
     serviceLink: 'serviceLink'
   }
 }
-const getRequestUrl = (url) => {
+export const getRequestUrl = (url) => {
   for (let i in requestUrl) {
     const controller = i;
     const second = requestUrl[i];

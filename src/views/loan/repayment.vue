@@ -39,12 +39,13 @@
       }
     },
     created() {
+        debugger
         this.$request.get('getMonthRefund').then(res=> { //
-            if (res.data) {
+            if (res.code == 0 && res.data) {
               this.model = true;
-              const { date, model } = res.data;
+              const { date, money } = res.data;
               this.date = date;
-              this.model = model;
+              this.money = money;
             }
         });
     },

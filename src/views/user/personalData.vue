@@ -54,6 +54,7 @@
 </template>
 
 <script>
+  import { getRequestUrl } from '@/util/utils.js'
   /*
   * el-upload中的:data="{  }" 是上传附带的参数
   *
@@ -82,7 +83,21 @@
       }
     },
     created() {
-      const {workInfo, education, mainContact, otherContact} = this.$store.state.userInfo;
+      debugger
+      const { id } =  this.$store.state.userInfo;
+      var info;
+        $.ajax({
+            type : "GET", //提交方式
+            url : getRequestUrl('info'),
+            async: false,
+            data : {'id': id},
+            success : function(result) {
+                if ( result.code ==  0 ) {
+                    info = result.data;
+                }
+            }
+        });
+      const {workInfo, education, mainContact, otherContact} = info;
       this.formLayout1 = [
         {label: '学历', prop: 'education'},
         {label: '公司名称', prop: 'companyName'},

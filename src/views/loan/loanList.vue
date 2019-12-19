@@ -30,7 +30,7 @@
                                     <span>￥{{ item.money }}</span>
                                 </p>
                                 <p>
-                                    月供：￥{{ item.money }}* {{ item.monthNum }}期
+                                    月供：￥{{ item.termMoney }}* {{ item.monthNum }}期
                                 </p>
                                 <p class="create-date">
                                     订单生成时间：{{ item.createDate }}

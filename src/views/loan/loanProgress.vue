@@ -9,7 +9,7 @@
                 <el-steps :active="formData.status" align-center>
                     <el-step v-for="item in stepData" :title="item.curStatusName" icon="el-icon-circle-check"></el-step>
                 </el-steps>
-                <div class="tips">温馨提示：<span class="inner"></span></div>
+                <div class="tips">温馨提示：<span class="inner" style="color: red;">{{tips}}</span></div>
                 <div class="detail">
                     <div class="title">借款详情</div>
                     <div class="content">
