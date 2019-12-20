@@ -10,6 +10,10 @@ Vue.use(Router);
 export default new Router({
   routes: [
     {
+      path: '*',
+      redirect: '/' // 重定向
+    },
+    {
       path: '/',
       component: home,
       children: [
@@ -18,7 +22,7 @@ export default new Router({
           name: 'loan',
           component: home,
           children: [
-            {path: '/', component: resolve => require(['@/views/loan/loan.vue'], resolve)},
+            {path: '/', name: 'home_loan', component: resolve => require(['@/views/loan/loan.vue'], resolve)},
             {path: 'loanmicro', component: resolve => require(['@/views/loan/loanMicro'], resolve)},
             {path: 'loanlarge', component: resolve => require(['@/views/loan/loanLarge'], resolve)},
             {path: 'loanloser', component: resolve => require(['@/views/loan/loanLoser'], resolve)},

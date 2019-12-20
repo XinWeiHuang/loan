@@ -48,12 +48,11 @@ Object.keys(methods).forEach((key)=>{
 
 router.beforeEach((to, from, next)=> {
   const { userInfo } = store.state;
-  if (!userInfo.id && to.name !== 'login') {
+  if (!userInfo.id && to.name !== 'login' && to.name !== 'home_loan') {
     next({ name: 'login' })
   } else {
     next()
   }
-  next()
 });
 
 
