@@ -45,13 +45,12 @@
 
                 </section>
                 <footer :class="[ isSignIn ? 'footer-sign-in' : 'footer-sign-up']">
+                    <div class="link_home">
+                        <a href="javascript:void(0)" @click="handlePageHome">去首页</a>
+                    </div>
                     <el-button @click="formSubmit">确定</el-button>
                     <!--<div v-if="isSignIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>-->
                 </footer>
-
-                <div class="link_home">
-                    <a href="javascript:void(0)" @click="handlePageHome">去首页</a>
-                </div>
             </div>
         </div>
         <!--<footerComponent :idx="3"></footerComponent>-->
@@ -422,16 +421,6 @@
                         color: #909399;
                     }
                 }
-                .link_home {
-                    position: absolute;
-                    right: 18px;
-                    bottom: 200px;
-                    a {
-                        text-decoration: underline;
-                        color: #333;
-                        font-size: 16px;
-                    }
-                }
 
                 section {
                     margin-top: 20%;
@@ -518,7 +507,17 @@
                 footer {
                     margin-top: 17%;
                     text-align: center;
-
+                    position: relative;
+                    .link_home {
+                        position: absolute;
+                        right: 18px;
+                        bottom: 55px;
+                        a {
+                            text-decoration: underline;
+                            color: #333;
+                            font-size: 16px;
+                        }
+                    }
                     &.footer-sign-up {
                         margin-top: 0;
                     }
