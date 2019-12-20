@@ -78,6 +78,7 @@
               if (!res.code) {
                 sessionStorage.clear()
               }
+              this.$store.commit('resetState');
               this.$router.push({name: 'login'})
             });
             break;
