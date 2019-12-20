@@ -98,6 +98,11 @@ export default new Router({
               path: 'about',
               name: 'about',
               component: resolve => require(['@/views/mecenter/about.vue'], resolve)
+            },
+            {
+              path: 'articleDetail',
+              name: 'articleDetail',
+              component: resolve => require(['@/views/mecenter/articleDetail.vue'], resolve)
             }
           ]
         },

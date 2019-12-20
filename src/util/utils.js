@@ -111,6 +111,13 @@ const requestUrl = {
   },
   webInfo: {
     serviceLink: 'serviceLink'
+  },
+  article: {
+    getarticle: '',
+    articleDetail: 'detail'
+  },
+  articleItem: {
+    getDropDown: 'getDropDown'
   }
 }
 export const getRequestUrl = (url) => {

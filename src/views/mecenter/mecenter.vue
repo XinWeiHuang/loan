@@ -65,8 +65,8 @@
             type: 'error',
             message: res.msg
           });
-          this.serviceUrl = res.data;
         }
+        this.serviceUrl = res.data;
       });
       this.$store.dispatch('getCustomerInfo')
     },
@@ -85,6 +85,7 @@
 
           case '联系客服':
             // window.location.href = this.serviceUrl;
+            debugger;
             window.open(this.serviceUrl)
             break;
 
