@@ -48,9 +48,13 @@
                     <el-button @click="formSubmit">确定</el-button>
                     <!--<div v-if="isSignIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>-->
                 </footer>
+
+                <div class="link_home">
+                    <a href="javascript:void(0)" @click="handlePageHome">去首页</a>
+                </div>
             </div>
         </div>
-        <footerComponent :idx="3"></footerComponent>
+        <!--<footerComponent :idx="3"></footerComponent>-->
 
         <el-dialog
                 title="重置密码"
@@ -366,6 +370,9 @@
       },
       handleClose() {
 
+      },
+      handlePageHome() {
+        this.$router.push({ path: '/' })
       }
     }
   }
@@ -413,6 +420,16 @@
                         font-size: 18px;
                         margin-top: 5px;
                         color: #909399;
+                    }
+                }
+                .link_home {
+                    position: absolute;
+                    right: 18px;
+                    bottom: 200px;
+                    a {
+                        text-decoration: underline;
+                        color: #333;
+                        font-size: 16px;
                     }
                 }
 
@@ -499,7 +516,7 @@
                 }
 
                 footer {
-                    margin-top: 15%;
+                    margin-top: 17%;
                     text-align: center;
 
                     &.footer-sign-up {
