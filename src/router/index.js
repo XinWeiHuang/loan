@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/zjapp.vue'
+import request from '../util/utils'
 // import loan from '@/views/loan/loan.vue'
 // import credit from '@/views/credit/credit.vue'
 // import mecenter from '@/views/mecenter/mecenter.vue'
@@ -20,6 +21,16 @@ export default new Router({
         {
           path: '/',
           name: 'loan',
+          beforeEnter(to, from, next) {
+            request.get('getInfo').then(res=> {
+              const { data } = res;
+              if (data.isClose == 0) {
+                next({ name: 'close' });
+              } else {
+                next();
+              }
+            })
+          },
           component: home,
           children: [
             {path: '/', name: 'home_loan', component: resolve => require(['@/views/loan/loan.vue'], resolve)},
@@ -110,7 +121,8 @@ export default new Router({
           path: 'customer',
           component: home,
           children: [
-            {path: '/', component: resolve => require(['@/views/user/customerInfo.vue'], resolve)}
+            {path: '/', component: resolve => require(['@/views/user/customerInfo.vue'], resolve)},
+            {path: '/close', name: 'close', component: resolve => require(['@/views/close.vue'], resolve)},
           ]
         },
         {

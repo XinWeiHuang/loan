@@ -38,5 +38,8 @@ export const mutations = {
       state[i] = copyState[i] // 递归赋值
     }*/
    state.userInfo = {};
+  },
+  setCloseTips(state, data) {
+    state.closeTips = data;
   }
 };

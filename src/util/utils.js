@@ -1,5 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
+import config from '../../static/config'
 // const { interfaceUrl } = require('../../static/config')
 // export const location = interfaceUrl;
 export const global = {
@@ -63,7 +64,8 @@ export const global = {
   }
 };
 
-export const location = 'http://47.106.228.71:8080/' // 服务器地址
+// export const location = 'http://47.106.228.71:8080/' // 服务器地址
+export const location = config.location;
 //export const location = 'http://192.168.1.100:8080/' // 服务器地址
 const requestUrl = {
   user: {
@@ -110,7 +112,8 @@ const requestUrl = {
     draw: 'draw'
   },
   webInfo: {
-    serviceLink: 'serviceLink'
+    serviceLink: 'serviceLink',
+    getInfo: 'find'
   },
   article: {
     getarticle: '',
