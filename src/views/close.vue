@@ -1,6 +1,5 @@
 <template>
     <div class="wrapper">
-        <h1>close</h1>
         <span>{{ $store.state.closeTips }}</span>
     </div>
 </template>
@@ -11,6 +10,19 @@
     }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+    .wrapper {
+        height: 100%;
+        width: 100%;
+        position: relative;
+        span {
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+        }
+    }
 </style>

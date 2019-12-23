@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import home from '@/zjapp.vue'
 import request from '../util/utils'
+import store from '../store'
 // import loan from '@/views/loan/loan.vue'
 // import credit from '@/views/credit/credit.vue'
 // import mecenter from '@/views/mecenter/mecenter.vue'
@@ -24,6 +25,7 @@ export default new Router({
           beforeEnter(to, from, next) {
             request.get('getInfo').then(res=> {
               const { data } = res;
+              store.commit('setCloseTips', data.closeTips);
               if (data.isClose == 0) {
                 next({ name: 'close' });
               } else {

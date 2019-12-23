@@ -1,6 +1,6 @@
 import axios from 'axios'
 import qs from 'qs'
-import config from '../../static/config'
+import '../../static/config';
 // const { interfaceUrl } = require('../../static/config')
 // export const location = interfaceUrl;
 export const global = {
