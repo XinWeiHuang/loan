@@ -26,7 +26,7 @@ export default new Router({
             request.get('getInfo').then(res=> {
               const { data } = res;
               store.commit('setCloseTips', data.closeTips);
-              if (data.isClose == 0) {
+              if (data.isClose == 1) {
                 next({ name: 'close' });
               } else {
                 next();
