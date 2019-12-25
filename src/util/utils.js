@@ -75,6 +75,7 @@ const requestUrl = {
     updateIdCard: 'idCard',
     info: 'info',
     messageCode: 'messageCode',
+    editPassword: 'updatePassword'
   },
   admin: {
     signout: 'signout'
@@ -105,7 +106,8 @@ const requestUrl = {
   },
   system: {
     getloanRange: 'getloanRange',
-    getLoanRate: 'getMonthRates'
+    getLoanRate: 'getMonthRates',
+    systemfind: 'find',
   },
   wallet: {
     getWallet: '',

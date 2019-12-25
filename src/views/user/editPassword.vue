@@ -30,6 +30,7 @@
 
 <script>
 export default {
+    name: "editPassword",
     data() {
         return {
           isPassword: false,
@@ -73,13 +74,20 @@ export default {
           }
         });
         if (!Object.values(this.formKey).includes(false)) {
-          // 提交表单
-
-          this.$message({
-            type: 'success',
-            message: '修改成功'
-          });
-          this.$router.back();
+            this.$request.post("editPassword", formData).then(res => {
+                if (res.code == 0) {
+                    this.$message({
+                        type: 'success',
+                        message: '修改成功'
+                    });
+                    this.$router.back();
+                } else {
+                    this.$message({
+                        type: 'error',
+                        message: res.msg
+                    });
+                }
+            })
         }
       }
     }

@@ -56,7 +56,7 @@
       }
     },
     created() {
-      this.src = 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1576606555422&di=e539eab653abb030d42567758bd37811&imgtype=0&src=http%3A%2F%2Fb-ssl.duitang.com%2Fuploads%2Fitem%2F201811%2F13%2F20181113153303_qsioj.jpg'
+      this.src = require('../../../static/img/wallet.jpg')
       this.$request.get('getWallet').then(res => {
         if (!res.code) {
           if (res.data) {
@@ -100,7 +100,7 @@
 
             .img-box {
                 width: 100%;
-                height: 150px;
+                height: 200px;
                 overflow: hidden;
 
                 img {

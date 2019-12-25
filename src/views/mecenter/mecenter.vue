@@ -45,7 +45,7 @@
           {cls: 'icon iconfont icon-un-mine-o', tit: '我的资料', url: {name: 'info'}},
           /*{cls: 'icon-jiekuan', tit: '我的借款', url: {name: 'loanProgress'}},*/
           {cls: 'icon-huankuan', tit: '我的还款', url: {name: 'repayment'}},
-          /*{cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},*/
+          {cls: 'icon iconfont icon-un-complain-o', tit: '修改密码', url: {name: 'editPassword'}},
           /*{cls:'icon-jiangli',tit:'我的奖励',url:''},*/
           {cls: 'icon-help', tit: '帮助中心', url: {name: 'about'}},
           {cls: ' iconfont icon-un-servicer-o', tit: '联系客服', url: ''},

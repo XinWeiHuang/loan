@@ -220,6 +220,7 @@
         sliderMin: 5000,
         sliderMax: 50000,
         termMoney: 0,
+        moneyScale: 1000,
         lists: [
           {
             cls: "",
@@ -252,6 +253,11 @@
           return this.$store.state.loanDetail.money;
         },
         set(val) {
+          debugger
+          var tempMoney = val / this.moneyScale
+          tempMoney = tempMoney.toFixed(0)
+          tempMoney = tempMoney * this.moneyScale
+          val = tempMoney
           this.$store.commit("setLoanDetail", { prop: "money", val });
         }
       }
@@ -293,6 +299,11 @@
           this.getTermMoney();
         });
       });
+      this.$request.get("systemfind").then(res => {
+        if (res.status) {
+            this.moneyScale = res.data.accuracy
+        }
+      });
 
       this.termList.forEach(row => {
         row.forEach(item => {
@@ -308,7 +319,7 @@
     methods: {
       subtract() {
         let { money } = this.$store.state.loanDetail;
-        money -= 1000;
+        money -= this.moneyScale;
         if (money <= this.sliderMin) {
           money = this.sliderMin;
         }
@@ -316,7 +327,7 @@
       },
       addMoney() {
         let { money } = this.$store.state.loanDetail;
-        money += 1000;
+        money += this.moneyScale;
         if (money >= this.sliderMax) {
           money = this.sliderMax;
         }
