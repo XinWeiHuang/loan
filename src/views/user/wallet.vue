@@ -19,7 +19,7 @@
                     <div class="money">
                         <span class="inner">￥ {{ money2 }}</span>
                     </div>
-                    <el-button type="primary" @click="handleRepayment">立即还款</el-button>
+                    <el-button type="primary" :disabled="repayDisabled" @click="handleRepayment">立即还款</el-button>
                 </div>
             </div>
             <!--<div class="panel">
@@ -52,7 +52,8 @@
       return {
         money1: 0,
         money2: 0,
-        src: ''
+        src: '',
+        repayDisabled: true
       }
     },
     created() {
@@ -69,10 +70,24 @@
           })
         }
       });
+        this.$request.get('getMonthRefund').then(res => {
+            if (!res.code) {
+                if (res.data) {
+                    this.money2 = res.data.money
+                    if (this.money2 > 0) {
+                        this.repayDisabled = false
+                    }
+                    return
+                }
+            }
+        });
     },
     methods: {
       handleWithdraw() {
-        this.$request.post('draw').then(res => {
+        this.$request.post('draw',{'money': this.money1}).then(res => {
+            if (!res.code) {
+                this.money1=0
+            }
           this.$message({
             type: !res.code ? 'success' : 'warning',
             message: res.msg
@@ -80,10 +95,10 @@
         })
       },
       handleRepayment() {
-        // 立即还款
-        this.$request.post('').then(res => {
-
-        })
+          this.$message({
+              type: 'warn',
+              message: '当前还未到到还款日期'
+          })
       }
     }
   }
