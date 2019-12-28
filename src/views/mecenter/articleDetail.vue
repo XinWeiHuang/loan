@@ -3,7 +3,7 @@
         <top-component title="帮助详情"></top-component>
         <div class="main">
             <div class="title">{{ title }}
-                <span class="time">{{ createTime }}</span>
+                <!--<span class="time">{{ createTime }}</span>-->
             </div>
             <div class="content">{{ content }}</div>
         </div>

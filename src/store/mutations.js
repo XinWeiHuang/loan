@@ -39,6 +39,9 @@ export const mutations = {
     }*/
    state.userInfo = {};
   },
+  setUserInfo(state, params) {
+    state.userInfo[params.prop] = params.val;
+  },
   setCloseTips(state, data) {
     state.closeTips = data;
   }

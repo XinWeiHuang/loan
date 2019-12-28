@@ -39,7 +39,6 @@
       }
     },
     created() {
-        debugger
         this.$request.get('getMonthRefund').then(res=> { //
             if (res.code == 0 && res.data) {
               this.model = true;

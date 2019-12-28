@@ -145,7 +145,6 @@
 
       },
       resetBlurEvent(prop) {
-        debugger;
         this.resetFormKey[prop] = this.resetFormData[prop] ? true : false;
       },
 

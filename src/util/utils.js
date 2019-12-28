@@ -75,7 +75,8 @@ const requestUrl = {
     updateIdCard: 'idCard',
     info: 'info',
     messageCode: 'messageCode',
-    editPassword: 'updatePassword'
+    editPassword: 'updatePassword',
+    headerImg: 'headerImg'
   },
   admin: {
     signout: 'signout'
@@ -138,6 +139,26 @@ export const getRequestUrl = (url) => {
   return ''
 };
 
+const dateFormat = function (fmt, date) {
+  let ret;
+  let opt = {
+    "Y+": date.getFullYear().toString(),        // 年
+    "m+": (date.getMonth() + 1).toString(),     // 月
+    "d+": date.getDate().toString(),            // 日
+    "H+": date.getHours().toString(),           // 时
+    "M+": date.getMinutes().toString(),         // 分
+    "S+": date.getSeconds().toString()          // 秒
+    // 有其他格式化字符需求可以继续添加，必须转化成字符串
+  };
+  for (let k in opt) {
+    ret = new RegExp("(" + k + ")").exec(fmt);
+    if (ret) {
+      fmt = fmt.replace(ret[1], (ret[1].length == 1) ? (opt[k]) : (opt[k].padStart(ret[1].length, "0")))
+    };
+  };
+  return fmt;
+}
+
 let handler = {
   get(target, property) {
     ['get', 'post'].forEach((methods) => {
@@ -186,7 +207,8 @@ let handler = {
           axios.defaults.withCredentials = true;
           let contentType = '';
           if (methods == 'get') {
-            contentType = 'application/json;charset=UTF-8'
+            contentType = 'application/json;charset=UTF-8',
+            data["adkshj"] =  dateFormat("YYYY-mm-dd HH:MM:SS",new Date())
           } else {
             contentType = 'application/x-www-form-urlencoded'
           }

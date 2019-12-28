@@ -83,7 +83,6 @@
       }
     },
     created() {
-      debugger
       const { id } =  this.$store.state.userInfo;
       var info;
         $.ajax({

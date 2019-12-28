@@ -22,9 +22,18 @@
                 <span>0笔</span>
             </dd>
         </dl>-->
-        <div class="user-info" @click="handleUserIcon()">
+        <div class="user-info">
             <div class="user-img">
-                <img :src="getUserHead()">
+                <el-upload
+                        class="avatar-uploader"
+                        :action="this.action"
+                        :show-file-list="false"
+                        :on-success="handleAvatarSuccessOppo"
+                        :data="{name: '头像'}"
+                        :before-upload="beforeAvatarUpload">
+                    <img :src="this.headerImg">
+                </el-upload>
+                <!--<img :src="this.headerImg">-->
             </div>
             <div class="user-name">{{ userName }}</div>
         </div>
@@ -38,6 +47,7 @@
 </template>
 
 <script type="application/ecmascript">
+  import {location} from "../../util/utils";
   export default {
     data: function () {
       return {
@@ -52,13 +62,18 @@
           {cls: 'icon-about', tit: '关于我们', url: ''},
           {cls: 'icon iconfont icon-un-delete-border-o', tit: '退出登录', url: ''},
         ],
+        action: location + "resource/upload",
         userName: '不如',
-        serviceUrl: ''
+        serviceUrl: '',
+        headerImg: require('../../../static/img/default_user.png')
       }
     },
     created() {
-      const { name, phone } = this.$store.state.userInfo;
+      const { name, phone, headImageUrl } = this.$store.state.userInfo;
       this.userName = name ? name : phone;
+      if (headImageUrl != null && headImageUrl != undefined && headImageUrl.length > 0) {
+         this.headerImg = headImageUrl
+      }
       this.$request.get('serviceLink').then(res => {
         if (res.code) {
           return this.$message({
@@ -85,7 +100,6 @@
 
           case '联系客服':
             // window.location.href = this.serviceUrl;
-            debugger;
             window.open(this.serviceUrl)
             break;
 
@@ -93,12 +107,48 @@
             this.$router.push(item.url)
         }
       },
+      handleAvatarSuccessOppo(response, file, fileList) {
+          if (response.code == 0) {
+              const { data } = response;
+              //发送请求到后台修改头像
+              this.$request.post('headerImg', {'headResource': data.id}).then(res => {
+                  if (res.code == 0) {
+                      this.$message({
+                          message: '头像上传成功',
+                          type: 'success'
+                      });
+                      this.headerImg = data.fullPath;
+                      this.$store.commit("setUserInfo", {
+                          prop: "headImageUrl",
+                          val: data.fullPath
+                      });
+                  } else {
+                      this.$message({
+                          message: res.msg,
+                          type: 'error'
+                      });
+                  }
+              })
+          } else {
+              this.$message({
+                  message: response.msg,
+                  type: 'error'
+              });
+          }
+      },
+      beforeAvatarUpload(file) {
+          console.log(file);
+          const {type} = file;
+          if (!/jpeg|png|jpg|bmp/ig.test(type)) {
+            this.$message({
+                message: '请上传jpeg、png、jpg、bmpg格式的文件',
+                type: 'warning'
+            });
+          }
+      },
       handleUserIcon() {
         this.$router.push({name: 'info'})
       },
-      getUserHead() {
-        return require('../../../static/img/default_user.png')
-      }
     }
   }
 </script>

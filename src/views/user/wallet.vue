@@ -4,6 +4,12 @@
         <div class="content">
             <div class="img-box">
                 <img :src="src" alt="">
+                <div class="info">
+                    <div class="icon">
+                        <img :src="this.$store.state.userInfo.headImageUrl" alt="">
+                    </div>
+                    <div class="name">{{ authentication }}</div>
+                </div>
             </div>
             <div class="panel">
                 <div class="box">
@@ -53,23 +59,31 @@
         money1: 0,
         money2: 0,
         src: '',
-        repayDisabled: true
+        repayDisabled: true,
+        authentication: ''
       }
     },
     created() {
-      this.src = require('../../../static/img/wallet.jpg')
-      this.$request.get('getWallet').then(res => {
-        if (!res.code) {
-          if (res.data) {
-            return this.money1 = res.data.money;
-          }
-        } else {
-          this.$message({
-            type: 'warning',
-            message: res.msg
-          })
-        }
-      });
+        this.$request.get('info').then(res => {
+            if (!res.code && res.data.authentication) {
+                this.authentication = '已认证'
+            } else {
+                this.authentication = '未认证'
+            }
+        });
+        this.src = require('../../../static/img/wallet.jpg')
+        this.$request.get('getWallet').then(res => {
+            if (!res.code) {
+                if (res.data) {
+                    return this.money1 = res.data.money;
+                }
+            } else {
+                this.$message({
+                    type: 'warning',
+                    message: res.msg
+                })
+            }
+        });
         this.$request.get('getMonthRefund').then(res => {
             if (!res.code) {
                 if (res.data) {
@@ -112,15 +126,42 @@
 
         .content {
             margin-top: 2.8rem;
-
             .img-box {
                 width: 100%;
                 height: 200px;
                 overflow: hidden;
-
+                position: relative;
                 img {
                     width: 100%;
                     height: 100%;
+                }
+                .info {
+                    position: absolute;
+                    z-index: 999;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%, -50%);
+                    .name {
+                        border-radius: 11px;
+                        border: 1px solid #fff;
+                        height: 25px;
+                        width: 80px;
+                        color: #fff;
+                        line-height: 25px;
+                        margin-top: 20px;
+                        text-align: center;
+                    }
+                    .icon {
+                        width: 80px;
+                        height: 80px;
+                        border-radius: 50%;
+                        border: 2px solid #fff;
+                        overflow: hidden;
+                        img {
+                            height: 100%;
+                            width: 100%;
+                        }
+                    }
                 }
             }
         }

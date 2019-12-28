@@ -253,7 +253,6 @@
           return this.$store.state.loanDetail.money;
         },
         set(val) {
-            debugger
             var tempMoney = val
             if (tempMoney >= this.sliderMax) {
                 tempMoney = this.sliderMax
@@ -325,7 +324,6 @@
     },
     methods: {
       subtract() {
-          debugger
         let { money } = this.$store.state.loanDetail;
         money -= this.moneyScale;
         if (money <= this.sliderMin) {
@@ -334,7 +332,6 @@
         this.$store.commit("setLoanDetail", { prop: "money", val: money });
       },
       addMoney() {
-          debugger
         let { money } = this.$store.state.loanDetail;
         money += this.moneyScale;
         if (money >= this.sliderMax) {
@@ -343,7 +340,6 @@
         this.$store.commit("setLoanDetail", { prop: "money", val: money });
       },
       getTermMoney() {
-          debugger
         let { rate } = this.currentItem;
         const { money } = this.$store.state.loanDetail;
         if (rate && money) {

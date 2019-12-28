@@ -2,14 +2,6 @@
     <div class="wrapper">
         <top-component title="帮助中心"></top-component>
         <div class="content">
-           <!-- <el-collapse v-model="activeNames" @change="handleChange">
-                <el-collapse-item v-for="(item, index) in collapseData" :key="index" :title="item.title" :name="index + 1" >
-                    <div class="group" v-for="data in item.data">
-                        <div class="title">{{ data.title }}</div>
-                        <div class="content">{{ data.content }}</div>
-                    </div>
-                </el-collapse-item>
-            </el-collapse>-->
             <div class="title-list">
                 <div v-for="(item, index) in articleType" :key="index" :class="{ active: currentType == item.value }">
                     <el-button @click="switchType(item)">{{ item.label }}</el-button>
@@ -17,8 +9,8 @@
             </div>
             <div class="notice-content">
                 <div class="item" v-for="(item, index) in  getArticleData" :key="index" @click="readDetail(item)">
-                    <div class="title">{{ item.title }}</div>
-                    <div class="content">{{ item.content }}</div>
+                    <div class="title" style="color: black;">{{ item.title }}</div>
+                    <div class="content" style="color:#909399;">{{ item.shortContent }}</div>
                 </div>
             </div>
         </div>
@@ -26,7 +18,6 @@
 </template>
 
 <script>
-    import axios from 'axios';
   export default {
     name: "about",
     data() {
@@ -39,9 +30,6 @@
       };
     },
     created() {
-      /*axios.get('../../static/about/aboutData.json').then(res=> {
-        this.collapseData = res.data;
-      });*/
       this.$request.get('getarticle', { page: 1, size: 1000}).then(res=> {
         if (!res.code) {
           const { data } = res;
@@ -55,6 +43,9 @@
 
       this.$request.get('getDropDown').then(res=> {
         if (!res.code) {
+          if (res.length > 0) {
+              this.currentType = res[0].value;
+          }
           return this.articleType = res;
         }
         this.$message({
@@ -62,6 +53,7 @@
           message: res.msg
         });
       });
+
     },
     computed: {
       getArticleData() {
