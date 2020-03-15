@@ -49,22 +49,41 @@
     name: "info",
     data() {
       return {
-        data: []
+          data: [],
+          title1: '身份信息',
+          title2: '资料信息',
+          title3: '收款银行卡',
       }
     },
     created() {
-        this.data = [
-          { title: '只需3分钟完成资料验证，即可申请借款哦~', group: [
-              { route: { path: './userDetail' },  icon: require('../../assets/img/g_01.png'), title: '身份信息', describe: '*让我们了解您的基本情况', status: false },
-              { route: { path: './personalData' },  icon: require('../../assets/img/g_04.png'), title: '资料信息', describe: '*让我们了解您的资料信息', status: false },
-              { route: { path: './bankDetail' },  icon: require('../../assets/img/g_02.png'), title: '收款银行卡', describe: '银行卡号为收款账号也为还款账号', status: false },
-              /*{ route: { path: './phoneDetail' },  icon: require('../../assets/img/g_05.png'), title: '手机号认证', describe: '*认证您本人的手机号', status: false }*/
-            ]
-          }
-        ];
+        this.$request.get('info').then(res => {
+            if (!res.code) {
+                var data = res.data;
+                if (!data.completeIdCard) {
+                    this.title1  = this.title1 + '(未完善)';
+                }
+                if (!data.completeWorkInfo) {
+                    this.title2  = this.title2 + '(未完善)';
+                }
+                if (!data.completeBankCard) {
+                    this.title3  = this.title3 + '(未完善)';
+                }
+            }
+            this.initData();
+        });
     },
     methods: {
-
+        initData() {
+            this.data = [
+                { title: '只需3分钟完成资料验证，即可申请借款哦~', group: [
+                        { route: { path: './userDetail' },  icon: require('../../assets/img/g_01.png'), title: this.title1, describe: '*让我们了解您的基本情况', status: false },
+                        { route: { path: './personalData' },  icon: require('../../assets/img/g_04.png'), title: this.title2, describe: '*让我们了解您的资料信息', status: false },
+                        { route: { path: './bankDetail' },  icon: require('../../assets/img/g_02.png'), title: this.title3, describe: '银行卡号为收款账号也为还款账号', status: false },
+                        /*{ route: { path: './phoneDetail' },  icon: require('../../assets/img/g_05.png'), title: '手机号认证', describe: '*认证您本人的手机号', status: false }*/
+                    ]
+                }
+            ];
+        }
     }
   }
 </script>

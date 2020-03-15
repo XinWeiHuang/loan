@@ -7,6 +7,9 @@
                 <div class="info">
                     <div class="icon">
                         <img :src="this.$store.state.userInfo.headImageUrl" alt="">
+<!--                        <div class="vip-icon">-->
+<!--                            <img :src="this.lists[0].img" alt="">-->
+<!--                        </div>-->
                     </div>
                     <div class="name">{{ authentication }}</div>
                 </div>
@@ -17,7 +20,7 @@
                     <div class="money">
                         <span class="inner">￥ {{ money1 }}</span>
                     </div>
-                    <el-button type="primary" @click="handleWithdraw">提现</el-button>
+                    <el-button type="primary" @click="handleWithdraw" :disabled="withdrawDisabled">提现</el-button>
                     <div class="line"></div>
                 </div>
                 <div class="box">
@@ -48,6 +51,22 @@
             </div>-->
         </div>
         <footerComponent :idx="2"></footerComponent>
+
+        <el-dialog
+            title="密码"
+            :visible.sync="dialogVisible"
+            @close="closeForm('dialogVisible','pwdForm')">
+            <el-form :model="pwdForm" status-icon  ref="pwdForm" label-width="50px" class="demo-ruleForm">
+                <el-form-item label="密码" prop="password">
+                    <el-input type="password" v-model="pwdForm.password" autocomplete="off"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button @click="closeForm('dialogVisible','pwdForm')">取消</el-button>
+                    <el-button type="primary" @click="submitForm('pwdForm')">确定</el-button>
+                </el-form-item>
+            </el-form>
+        </el-dialog>
+
     </div>
 </template>
 
@@ -60,13 +79,26 @@
         money2: 0,
         src: '',
         repayDisabled: true,
-        authentication: ''
+        withdrawDisabled: true,
+        authentication: '',
+          needPassword: false,
+          dialogVisible: false,
+          pwdForm: {
+            password:''
+          },
+          lists: [
+              {img: require('../../../static/img/commonvip.png')},
+              {img: require('../../../static/img/supervippng.png')}
+          ],
       }
     },
     created() {
         this.$request.get('info').then(res => {
-            if (!res.code && res.data.authentication) {
-                this.authentication = '已认证'
+            if (!res.code) {
+                if (res.data.authentication){
+                    this.authentication = '已认证'
+                }
+                this.needPassword = res.data.needPassword;
             } else {
                 this.authentication = '未认证'
             }
@@ -75,6 +107,7 @@
         this.$request.get('getWallet').then(res => {
             if (!res.code) {
                 if (res.data) {
+                    this.withdrawDisabled = res.data.money <= 0;
                     return this.money1 = res.data.money;
                 }
             } else {
@@ -97,16 +130,42 @@
         });
     },
     methods: {
-      handleWithdraw() {
-        this.$request.post('draw',{'money': this.money1}).then(res => {
-            if (!res.code) {
-                this.money1=0
+        submitForm(formName) {
+            var password = this[formName]['password'];
+            if (isNaN(password) || password.length != 6) {
+                this.$message({
+                    type:'error',
+                    message: '提现密码为6位数字!'
+                })
+                return;
             }
-          this.$message({
-            type: !res.code ? 'success' : 'warning',
-            message: res.msg
+            this.doWithdraw();
+        },
+        closeForm(visible, form) {
+            this[visible] = false;
+            for (let key in this[form]) {
+                this[form][key] = '';
+            }
+        },
+      handleWithdraw() {
+          if (this.needPassword) {
+                this.dialogVisible = true;
+          } else {
+              this.doWithdraw()
+          }
+      },
+        doWithdraw() {
+          //1.生成一个获取最新用户信息
+          this.$request.post('draw',{'money': this.money1, 'password': this.pwdForm.password}).then(res => {
+              if (!res.code) {
+                  this.money1=0
+                  this.closeForm('dialogVisible', 'pwdForm')
+              }
+              this.$message({
+                  type: !res.code ? 'success' : 'warning',
+                  message: res.msg
+              })
           })
-        })
       },
       handleRepayment() {
           this.$message({
@@ -123,7 +182,6 @@
         height: 100%;
         width: 100%;
         overflow: hidden;
-
         .content {
             margin-top: 2.8rem;
             .img-box {
@@ -160,6 +218,15 @@
                         img {
                             height: 100%;
                             width: 100%;
+                        }
+                        .vip-icon {
+                            overflow: hidden;
+                            border-radius: 50%;
+                            position: absolute;
+                            width: 20px;
+                            height: 20px;
+                            left: 70%;
+                            top: -5%;
                         }
                     }
                 }

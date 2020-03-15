@@ -35,7 +35,12 @@
                 </el-upload>
                 <!--<img :src="this.headerImg">-->
             </div>
-            <div class="user-name">{{ userName }}</div>
+            <div class="user-name">
+                <span>{{ userName }}</span>
+                <div class="vip-icon">
+                    <img :src="this.vipIcons[vip].img" alt="">
+                </div>
+            </div>
         </div>
 
         <ul class="listCom list-arrow list-icon mt20">
@@ -65,7 +70,13 @@
         action: location + "resource/upload",
         userName: '不如',
         serviceUrl: '',
-        headerImg: require('../../../static/img/default_user.png')
+        headerImg: require('../../../static/img/default_user.png'),
+          vipIcons: [
+              {img: ''},
+              {img: require('../../../static/img/commonvip.png')},
+              {img: require('../../../static/img/supervippng.png')}
+          ],
+          vip: 0,
       }
     },
     created() {
@@ -83,6 +94,11 @@
         }
         this.serviceUrl = res.data;
       });
+        this.$request.get('info').then(res => {
+            if (!res.code) {
+                this.vip = res.data.vip;
+            }
+        });
       this.$store.dispatch('getCustomerInfo')
     },
     methods: {
@@ -176,7 +192,6 @@
                 top: 45%;
                 transform: translate(-50%, -50%);
                 overflow: hidden;
-
                 img {
                     width: 100%;
                     height: 100%;
@@ -188,8 +203,23 @@
                 top: 70%;
                 left: 50%;
                 transform: translateX(-50%);
-                font-size: 18px;
-                color: #fff;
+                span {
+                    font-size: 18px;
+                    color: #fff;
+                }
+                .vip-icon {
+                    position: absolute;
+                    overflow: hidden;
+                    width: 20px;
+                    height: 20px;
+                    border-radius: 50%;
+                    top: 10%;
+                    left: 102%;
+                    img {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
             }
         }
 

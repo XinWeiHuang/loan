@@ -140,7 +140,14 @@
       submit() {
         // 提交信息
         this.$request.post('getIdCard', this.formData).then(data => {
-          this.$router.back();
+            if (!data.code) {
+                this.$router.back();
+            } else {
+                this.$message({
+                    message: data.msg,
+                    type: 'warning'
+                });
+            }
         });
       }
     }

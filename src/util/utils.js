@@ -132,7 +132,7 @@ export const getRequestUrl = (url) => {
     const second = requestUrl[i];
     for (let n in second) {
       if (url === n) {
-        return location + controller + '/' + second[n]
+        return location + controller + '/' + second[n] + '?appid=web';
       }
     }
   }

@@ -46,7 +46,7 @@
                 </section>
                 <footer :class="[ isSignIn ? 'footer-sign-in' : 'footer-sign-up']">
                     <div class="link_home">
-                        <a href="javascript:void(0)" @click="handlePageHome">去首页</a>
+                        <a href="javascript:void(0)" @click="handlePageHome"><span style="color: #C0C4CC">首页</span></a>
                     </div>
                     <el-button @click="formSubmit">确定</el-button>
                     <!--<div v-if="isSignIn" class="forget-password" @click="dialogVisible = true">忘记密码？</div>-->
@@ -251,7 +251,6 @@
             return (
               <el-button
                 onClick={() => _this.getMessageVerifyCode()}
-                type="primary"
                 size="mini"
                 disabled={ _this.VerifyCodeDisabled  }
                 class="verify-code btn">{ _this.VerifyCodeMessage }</el-button>
@@ -560,11 +559,9 @@
                         margin-bottom: 20px;
                         position: relative;
                         transition: all 0.1s linear;
-
                         &.is-error {
                             border-bottom: 1px solid red;
                         }
-
                         &.yzm {
                             position: relative;
 

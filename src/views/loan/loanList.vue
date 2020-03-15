@@ -40,9 +40,7 @@
                     </el-row>
                 </div>
             </div>
-<!--            <div class="empty" v-if="!loadList.length"></div>-->
         </div>
-
         <footerComponent :idx="1"></footerComponent>
     </div>
 </template>
@@ -106,7 +104,7 @@
             background: #EBEEF5;
 
             .group {
-                border-bottom: 1px solid #ccc;
+                border-radius: 5px;
                 padding: 0 10px;
                 box-sizing: border-box;
                 background: #fff;
@@ -153,8 +151,7 @@
                         width: 40px;
                         line-height: 40px;
                         text-align: center;
-                        border: 1px solid #EBEEF5;
-
+                        border: 0px solid #EBEEF5;
                         i {
                             font-size: 30px;
                             color: @themeColor
